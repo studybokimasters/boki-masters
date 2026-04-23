@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習記録</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="header compact-header">
+  <div class="header-inner compact-header-inner">
+    <div class="page-heading compact-page-heading">
+      <h2 class="page-title">学習記録</h2>
+    </div>
+  </div>
+</div>
+
+  <div class="container">
+
+    <div class="card timer-card">
+      <h3>勉強タイマー</h3>
+      <h1 id="timer">00:00:00</h1>
+
+      <div class="timer-buttons">
+        <button onclick="startTimer()">開始</button>
+        <button onclick="stopTimer()">停止</button>
+        <button onclick="resetTimer()">リセット</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h3>今日の勉強時間</h3>
+        <p id="todayTime" class="card-value">0時間0分</p>
+      </div>
+
+      <div class="card">
+        <h3>累計勉強時間</h3>
+        <p id="totalTime" class="card-value">0時間0分</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 16px;">
+      <h3>今週の目標設定</h3>
+      <div class="inline-form">
+        <input type="number" id="weeklyGoalInput" min="1" placeholder="例: 10">
+        <span>時間</span>
+        <button onclick="saveWeeklyGoal()">保存</button>
+      </div>
+      <p id="weeklyGoalDisplay" class="sub-text">今週の目標: 10時間</p>
+      <p id="weeklyText" class="card-value">0時間 / 10時間（0%）</p>
+      <div class="progress-bar large">
+        <div id="progressFill"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5v9.5a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1z"/>
+      </svg>
+      <span>ホーム</span>
+    </a>
+
+    <a href="practice.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm8 1.5V9h4.5"/>
+        <path d="M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>練習</span>
+    </a>
+
+    <a href="record.html" class="active">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 20V10m7 10V4m7 16v-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>記録</span>
+    </a>
+
+    <a href="tasks.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 4h6m-9 4h12M6 12h12M6 16h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M4 4h1M4 8h1M4 12h1M4 16h1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>やること</span>
+    </a>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

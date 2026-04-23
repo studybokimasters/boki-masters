@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>練習</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="header compact-header">
+    <div class="header-inner compact-header-inner">
+      <div class="page-heading compact-page-heading">
+        <h2 class="page-title">問題演習</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- モード選択 -->
+    <div class="mode-grid" id="modeSelect">
+      <button class="mode-btn" onclick="startMode('category')">
+        <div class="mode-title">分野別</div>
+        <div class="mode-desc">苦手を集中攻略</div>
+      </button>
+
+      <button class="mode-btn" onclick="startMode('random', 'easy')">
+        <div class="mode-title">ランダム</div>
+        <div class="mode-desc">全範囲ミックス</div>
+      </button>
+
+      <button class="mode-btn" onclick="startMode('mistake')">
+        <div class="mode-title">間違い復習</div>
+        <div class="mode-desc">ミスだけ復習</div>
+      </button>
+
+      <button class="mode-btn" onclick="startMode('test')">
+        <div class="mode-title">テスト</div>
+        <div class="mode-desc">10問で実力確認</div>
+      </button>
+    </div>
+
+    <!-- 分野選択 -->
+    <div id="categorySelect" class="category-select" style="display:none;">
+      <div class="section-head">
+        <h3>分野を選択</h3>
+        <p>進捗を見ながら解きたい分野を選べます</p>
+      </div>
+
+      <div id="categoryCards" class="category-card-grid"></div>
+
+      <div class="section-actions">
+        <button class="secondary-btn" onclick="backToMenu()">戻る</button>
+      </div>
+    </div>
+
+    <!-- 問題エリア -->
+    <div id="quizArea" style="display:none;">
+      <div class="quiz-topbar">
+        <div>
+          <div class="quiz-mode-label" id="quizModeLabel">分野別</div>
+          <div class="quiz-category-label" id="quizCategoryLabel">基礎</div>
+        </div>
+        <div class="quiz-count" id="quizCount">1 / 10</div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar large">
+          <div id="quizProgressFill"></div>
+        </div>
+      </div>
+
+      <div class="question-card">
+        <h3 id="question">問題</h3>
+      </div>
+
+      <div id="choices" class="choices"></div>
+      <div id="result" class="result-box"></div>
+
+      <div class="actions">
+        <button onclick="nextQuestion()">次へ</button>
+        <button onclick="backToMenu()" class="secondary-btn">戻る</button>
+      </div>
+    </div>
+
+    <!-- 結果画面 -->
+    <div id="resultScreen" class="result-screen" style="display:none;">
+      <div class="result-hero-card">
+        <div class="result-badge">RESULT</div>
+        <h2>演習完了</h2>
+        <p id="resultSummaryText">おつかれさまでした</p>
+
+        <div class="result-score-circle">
+          <span id="resultAccuracy">0%</span>
+        </div>
+
+        <div class="result-stats">
+          <div class="result-stat">
+            <div class="result-stat-label">正答数</div>
+            <div class="result-stat-value" id="correctCountText">0 / 0</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">分野</div>
+            <div class="result-stat-value" id="resultCategoryText">基礎</div>
+          </div>
+        </div>
+
+        <div class="result-progress-block">
+          <div class="result-progress-head">
+            <span>正答率</span>
+            <span id="resultAccuracyText">0 / 0</span>
+          </div>
+          <div class="progress-bar large">
+            <div id="resultProgressFill"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button onclick="retryCurrentSet()">もう一度解く</button>
+          <button class="secondary-btn" onclick="backToMenu()">分野一覧へ</button>
+        </div>
+
+        <div class="review-list-wrap">
+          <div class="review-list-head">
+            <h3>回答の振り返り</h3>
+            <p>自分の回答と正解、理由をまとめて確認できます</p>
+          </div>
+          <div id="reviewList" class="review-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5v9.5a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1z"/>
+      </svg>
+      <span>ホーム</span>
+    </a>
+
+    <a href="practice.html" class="active">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm8 1.5V9h4.5"/>
+        <path d="M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>練習</span>
+    </a>
+
+    <a href="record.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 20V10m7 10V4m7 16v-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>記録</span>
+    </a>
+
+    <a href="tasks.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 4h6m-9 4h12M6 12h12M6 16h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M4 4h1M4 8h1M4 12h1M4 16h1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>やること</span>
+    </a>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
