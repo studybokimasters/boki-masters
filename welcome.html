@@ -6,78 +6,811 @@
   <title>簿記マスターズ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500;700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-top: #f7fbff;
+      --bg-bottom: #e7f0fb;
+      --text-main: #0f2e6d;
+      --text-sub: #4c6594;
+      --text-soft: #6f84ac;
+      --line-soft: rgba(255,255,255,0.28);
+      --panel-bg: rgba(255,255,255,0.14);
+      --panel-border: rgba(255,255,255,0.26);
+      --panel-shadow: 0 30px 80px rgba(11, 35, 91, 0.18);
+      --blue-1: #0f57e6;
+      --blue-2: #3a8bff;
+      --blue-3: #84bfff;
+      --white-1: rgba(255,255,255,0.96);
+      --white-2: rgba(255,255,255,0.80);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Noto Serif JP", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(139, 196, 255, 0.24), transparent 24%),
+        radial-gradient(circle at 80% 12%, rgba(54, 116, 255, 0.14), transparent 24%),
+        linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .landing {
+      position: relative;
+      width: 100%;
+    }
+
+    /* ===== hero ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        linear-gradient(180deg, rgba(247,251,255,0.18) 0%, rgba(247,251,255,0.04) 36%, rgba(231,240,251,0) 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.00) 34%, rgba(255,255,255,0.00) 100%),
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.65), transparent 28%),
+        radial-gradient(circle at 75% 18%, rgba(255,255,255,0.25), transparent 22%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-visual {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(248,251,255,0.10) 0%, rgba(248,251,255,0.06) 30%, rgba(232,241,251,0.00) 100%),
+        url("welcome-hero.png") center center / cover no-repeat;
+      z-index: 0;
+      transform: scale(1.01);
+    }
+
+    .hero-fade {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 340px;
+      background: linear-gradient(
+        180deg,
+        rgba(231,240,251,0) 0%,
+        rgba(231,240,251,0.12) 18%,
+        rgba(231,240,251,0.55) 46%,
+        rgba(231,240,251,0.92) 74%,
+        #e7f0fb 100%
+      );
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 3;
+      width: min(100%, 1320px);
+      margin: 0 auto;
+      padding: 42px 40px 88px;
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 36px;
+      align-items: start;
+      min-height: 100vh;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: calc(100vh - 130px);
+      padding-top: 6px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: fit-content;
+      padding: 14px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.24);
+      box-shadow: 0 18px 42px rgba(10, 35, 88, 0.10);
+      backdrop-filter: blur(18px) saturate(140%);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+    }
+
+    .brand-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.52), rgba(255,255,255,0.18));
+      border: 1px solid rgba(255,255,255,0.30);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.48);
+      overflow: hidden;
+    }
+
+    .brand-icon svg {
+      width: 38px;
+      height: 38px;
+      display: block;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-ja {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      color: var(--text-main);
+    }
+
+    .brand-en {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.34em;
+      color: #3a72d3;
+      text-transform: uppercase;
+    }
+
+    .hero-copy {
+      margin-top: 70px;
+      max-width: 760px;
+    }
+
+    .hero-title {
+      margin: 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(54px, 7vw, 108px);
+      line-height: 1.04;
+      font-weight: 900;
+      letter-spacing: -0.07em;
+      color: #0f46b8;
+      text-shadow:
+        0 10px 40px rgba(255,255,255,0.35),
+        0 14px 34px rgba(22, 67, 154, 0.12);
+    }
+
+    .hero-title span {
+      color: #102e74;
+    }
+
+    .hero-sub {
+      margin: 26px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(19px, 2vw, 31px);
+      line-height: 1.7;
+      letter-spacing: -0.04em;
+      color: #193f8b;
+      text-shadow: 0 8px 24px rgba(255,255,255,0.28);
+    }
+
+    .hero-points {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 24px;
+      margin: 28px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .hero-points li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #295197;
+      text-shadow: 0 6px 18px rgba(255,255,255,0.24);
+    }
+
+    .hero-points .dot {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--blue-2), var(--blue-1));
+      color: white;
+      font-size: 13px;
+      box-shadow: 0 10px 20px rgba(27, 85, 219, 0.22);
+      flex-shrink: 0;
+    }
+
+    .hero-bottom-copy {
+      margin-top: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-scroll {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.90);
+      text-shadow: 0 10px 24px rgba(18, 54, 130, 0.28);
+    }
+
+    .hero-scroll span {
+      font-size: 14px;
+      letter-spacing: 0.24em;
+      font-weight: 700;
+    }
+
+    .hero-scroll-arrow {
+      width: 18px;
+      height: 18px;
+      border-right: 3px solid currentColor;
+      border-bottom: 3px solid currentColor;
+      transform: rotate(45deg);
+      animation: floatArrow 1.8s ease-in-out infinite;
+    }
+
+    @keyframes floatArrow {
+      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.75; }
+      50% { transform: rotate(45deg) translateY(8px); opacity: 1; }
+    }
+
+    .hero-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-start;
+      padding-top: 80px;
+    }
+
+    .auth-card {
+      width: min(100%, 390px);
+      padding: 28px;
+      border-radius: 34px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.16));
+      border: 1px solid var(--panel-border);
+      box-shadow: var(--panel-shadow);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+    }
+
+    .auth-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .auth-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.48), rgba(255,255,255,0.18));
+      border: 1px solid rgba(255,255,255,0.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.48);
+    }
+
+    .auth-logo svg {
+      width: 42px;
+      height: 42px;
+      display: block;
+    }
+
+    .auth-title {
+      margin: 4px 0 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(30px, 3vw, 44px);
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: #163c84;
+    }
+
+    .auth-text {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.8;
+      font-weight: 600;
+      color: #466188;
+    }
+
+    .auth-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .auth-btn {
+      min-height: 72px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .auth-btn svg {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .auth-btn.primary {
+      color: white;
+      background: linear-gradient(180deg, #1f6cff 0%, #0b57e8 100%);
+      box-shadow:
+        0 18px 36px rgba(14, 86, 232, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+    }
+
+    .auth-btn.secondary {
+      color: #15418f;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.76));
+      border: 1px solid rgba(121, 151, 206, 0.28);
+      box-shadow:
+        0 14px 30px rgba(15, 23, 42, 0.08),
+        inset 0 1px 0 rgba(255,255,255,0.82);
+    }
+
+    .auth-btn.ghost {
+      min-height: 56px;
+      color: #163f87;
+      background: transparent;
+      font-size: 16px;
+    }
+
+    .auth-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ===== seamless about section ===== */
+    .about {
+      position: relative;
+      margin-top: -180px;
+      padding: 0 0 100px;
+      z-index: 4;
+    }
+
+    .about-surface {
+      width: min(100%, 1320px);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .about-panel {
+      position: relative;
+      padding: 56px 46px 40px;
+      border-radius: 40px;
+      background:
+        linear-gradient(180deg, rgba(6, 53, 152, 0.84) 0%, rgba(6, 55, 160, 0.88) 48%, rgba(8, 58, 164, 0.94) 100%);
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow:
+        0 40px 90px rgba(6, 39, 112, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+
+    .about-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(164, 211, 255, 0.20), transparent 20%),
+        radial-gradient(circle at 86% 12%, rgba(255,255,255,0.12), transparent 22%),
+        linear-gradient(180deg, rgba(255,255,255,0.06), transparent 26%);
+      pointer-events: none;
+    }
+
+    .about-head {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 860px;
+      margin: 0 auto;
+      color: white;
+    }
+
+    .about-badge {
+      display: inline-block;
+      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.28em;
+      color: rgba(142, 211, 255, 0.95);
+    }
+
+    .about-title {
+      margin: 0;
+      font-family: "Noto Serif JP", serif;
+      font-size: clamp(34px, 4vw, 62px);
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+    }
+
+    .about-text {
+      margin: 18px auto 0;
+      font-size: clamp(16px, 1.5vw, 24px);
+      line-height: 1.9;
+      color: rgba(233, 243, 255, 0.88);
+      font-weight: 500;
+      max-width: 760px;
+    }
+
+    .feature-grid {
+      position: relative;
+      z-index: 1;
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      position: relative;
+      padding: 28px 20px 24px;
+      min-height: 220px;
+      text-align: center;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.06));
+      border: 1px solid rgba(255,255,255,0.10);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.10),
+        0 16px 30px rgba(0, 0, 0, 0.06);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .feature-card::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      right: -12px;
+      width: 1px;
+      height: calc(100% - 52px);
+      background: rgba(255,255,255,0.14);
+    }
+
+    .feature-card:last-child::after {
+      display: none;
+    }
+
+    .feature-icon {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 18px;
+      border-radius: 28px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, rgba(162, 206, 255, 0.26), rgba(126, 174, 255, 0.12));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        0 16px 28px rgba(3, 28, 87, 0.12);
+    }
+
+    .feature-icon svg {
+      width: 42px;
+      height: 42px;
+      display: block;
+      color: white;
+    }
+
+    .feature-title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.6;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.03em;
+    }
+
+    .feature-desc {
+      margin: 12px 0 0;
+      font-size: 14px;
+      line-height: 1.9;
+      color: rgba(231, 241, 255, 0.86);
+      font-weight: 500;
+    }
+
+    /* ===== responsive ===== */
+    @media (max-width: 1180px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 26px;
+      }
+
+      .hero-right {
+        justify-content: flex-start;
+        padding-top: 8px;
+      }
+
+      .auth-card {
+        width: min(100%, 520px);
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .feature-card:nth-child(2)::after,
+      .feature-card:nth-child(4)::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-inner,
+      .about-surface {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .hero-inner {
+        padding-top: 18px;
+        padding-bottom: 84px;
+      }
+
+      .hero-left {
+        min-height: auto;
+      }
+
+      .hero-copy {
+        margin-top: 40px;
+      }
+
+      .hero-title {
+        font-size: clamp(42px, 13vw, 72px);
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .hero-points {
+        gap: 12px 18px;
+      }
+
+      .hero-points li {
+        font-size: 14px;
+      }
+
+      .auth-card {
+        padding: 24px 20px;
+        border-radius: 28px;
+      }
+
+      .auth-title {
+        font-size: 32px;
+      }
+
+      .auth-btn {
+        min-height: 64px;
+        font-size: 16px;
+      }
+
+      .about {
+        margin-top: -90px;
+        padding-bottom: 72px;
+      }
+
+      .about-panel {
+        padding: 40px 22px 26px;
+        border-radius: 30px;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card::after {
+        display: none;
+      }
+    }
+  </style>
 </head>
-<body class="welcome-page-body">
+<body>
+  <main class="landing">
 
-  <main class="welcome-page">
+    <section class="hero">
+      <div class="hero-visual"></div>
+      <div class="hero-fade"></div>
 
-    <!-- 1画面目：画像を主役にする -->
-    <section class="welcome-hero-section" aria-label="簿記マスターズ メインビジュアル">
-      <div class="welcome-hero-overlay"></div>
-      <div class="welcome-hero-bottom-fade"></div>
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div>
+            <div class="brand">
+              <div class="brand-icon" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <path d="M10 46h9V34h-9v12Zm15 0h9V24h-9v22Zm15 0h9V16h-9v30Z" fill="url(#g1)"/>
+                  <path d="M10 30l14-12 10 7 16-16" stroke="#F4B12A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="m47 9 13 2-5 12" stroke="#F4B12A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <defs>
+                    <linearGradient id="g1" x1="10" y1="16" x2="49" y2="48" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#56A3FF"/>
+                      <stop offset="1" stop-color="#0D4FCE"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+              <div class="brand-text">
+                <div class="brand-ja">簿記マスターズ</div>
+                <div class="brand-en">BOKI MASTERS</div>
+              </div>
+            </div>
 
-      <div class="welcome-hero-copy-wrap">
-        <p class="welcome-hero-copy">続けられる簿記学習を、ひとつに。</p>
+            <div class="hero-copy">
+              <h1 class="hero-title">続けられる人が、<br><span>合格に一番近い。</span></h1>
+              <p class="hero-sub">簿記学習のすべてを、これひとつに。</p>
+
+              <ul class="hero-points">
+                <li><span class="dot">✓</span>学習記録</li>
+                <li><span class="dot">✓</span>問題演習</li>
+                <li><span class="dot">✓</span>復習サポート</li>
+                <li><span class="dot">✓</span>タスク管理</li>
+              </ul>
+            </div>
+          </div>
+
+          <a href="#about" class="hero-bottom-copy hero-scroll" aria-label="下へスクロール">
+            <span>SCROLL</span>
+            <div class="hero-scroll-arrow"></div>
+          </a>
+        </div>
+
+        <div class="hero-right">
+          <div class="auth-card">
+            <div class="auth-top">
+              <div class="auth-logo" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <path d="M10 46h9V34h-9v12Zm15 0h9V24h-9v22Zm15 0h9V16h-9v30Z" fill="url(#g2)"/>
+                  <path d="M10 30l14-12 10 7 16-16" stroke="#F4B12A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="m47 9 13 2-5 12" stroke="#F4B12A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <defs>
+                    <linearGradient id="g2" x1="10" y1="16" x2="49" y2="48" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#56A3FF"/>
+                      <stop offset="1" stop-color="#0D4FCE"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              <h2 class="auth-title">さあ、始めよう。</h2>
+              <p class="auth-text">学習データはアカウントに保存されます</p>
+            </div>
+
+            <div class="auth-actions">
+              <a href="signup.html" class="auth-btn primary">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M15 19a6 6 0 0 0-12 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <circle cx="9" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+                  <path d="M19 8v6M16 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                新規登録
+              </a>
+
+              <a href="login.html" class="auth-btn secondary">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                ログイン
+              </a>
+
+              <a href="index.html" class="auth-btn ghost">ゲストで試してみる ＞</a>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="scroll-indicator" aria-hidden="true"></div>
     </section>
 
-    <!-- 2画面目：説明＋導線 -->
-    <section class="welcome-info-section" id="welcome-info">
-      <div class="welcome-info-container">
+    <section class="about" id="about">
+      <div class="about-surface">
+        <div class="about-panel">
+          <div class="about-head">
+            <div class="about-badge">ABOUT</div>
+            <h2 class="about-title">迷わず学び、確実に力になる。</h2>
+            <p class="about-text">
+              簿記学習に必要な機能をすべて搭載。<br>
+              毎日の継続を支え、合格まで伴走します。
+            </p>
+          </div>
 
-        <div class="welcome-info-left">
-          <div class="welcome-info-badge">ABOUT</div>
-          <h2 class="welcome-info-title">簿記学習を、<br>続けやすくする。</h2>
-          <p class="welcome-info-text">
-            学習記録、問題演習、復習、やること管理。<br>
-            毎日の学習を止めないための簿記アプリです。
-          </p>
-
-          <div class="welcome-feature-list">
-            <div class="welcome-feature-item">
-              <strong>学習記録を見える化</strong>
-              <span>勉強時間と進捗をひと目で把握</span>
+          <div class="feature-grid">
+            <div class="feature-card">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 19V11m5 8V7m5 12V4m5 15v-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="feature-title">学習記録を見える化</h3>
+              <p class="feature-desc">
+                勉強時間や進捗をグラフで確認。<br>
+                成長を実感し、モチベーションが続く。
+              </p>
             </div>
 
-            <div class="welcome-feature-item">
-              <strong>苦手分野を把握</strong>
-              <span>分野別演習と復習で弱点を整理</span>
+            <div class="feature-card">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M4 5.5c0-.8.7-1.5 1.5-1.5H11v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5v-13Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+              <h3 class="feature-title">問題演習で力をつける</h3>
+              <p class="feature-desc">
+                厳選された問題で実力を強化。<br>
+                解いた問題は自動で記録。
+              </p>
             </div>
 
-            <div class="welcome-feature-item">
-              <strong>毎日の継続を支える</strong>
-              <span>やること管理で迷わず学習を始められる</span>
+            <div class="feature-card">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M20 6v5h-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M4 18v-5h5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="M7 9a7 7 0 0 1 12-3M17 15A7 7 0 0 1 5 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="feature-title">復習で記憶を定着</h3>
+              <p class="feature-desc">
+                間違えた問題を自動でピックアップ。<br>
+                効率的に苦手を克服。
+              </p>
+            </div>
+
+            <div class="feature-card">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M8 4h8m-9 4h10M7 12h10M7 16h7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                  <path d="m17 17 2 2 4-4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <h3 class="feature-title">やること管理で継続</h3>
+              <p class="feature-desc">
+                今日やるべきことがひと目でわかる。<br>
+                習慣化をサポート。
+              </p>
             </div>
           </div>
         </div>
-
-        <div class="welcome-info-right">
-          <div class="welcome-auth-card">
-            <div class="welcome-auth-head">
-              <h3>利用をはじめる</h3>
-              <p>アカウント作成で学習データを保存できます</p>
-            </div>
-
-            <div class="welcome-auth-actions">
-              <a href="signup.html" class="welcome-auth-btn primary">新規登録</a>
-              <a href="login.html" class="welcome-auth-btn secondary">ログイン</a>
-              <a href="index.html" class="welcome-auth-btn ghost">ゲストで試す</a>
-            </div>
-
-            <div class="welcome-auth-note">
-              ゲストで試してから、あとで登録することもできます。
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
   </main>
-
 </body>
 </html>
