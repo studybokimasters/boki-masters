@@ -4,308 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>簿記マスターズ</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background: #eaf2fc;
-      overflow-x: hidden;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    body {
-      display: block;
-    }
-
-    .welcome-page {
-      width: 100%;
-      min-height: 100vh;
-      background: linear-gradient(180deg, #f5f9ff 0%, #eaf2fc 100%);
-    }
-
-    /*
-      画像そのものを最大限活かすため、
-      hero全体を1枚絵として扱う
-    */
-    .hero-wrap {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(126, 182, 255, 0.18), transparent 24%),
-        radial-gradient(circle at 80% 12%, rgba(53, 113, 238, 0.10), transparent 24%),
-        linear-gradient(180deg, #f7fbff 0%, #e8f0fb 100%);
-    }
-
-    /*
-      生成画像の比率を維持しながら表示
-      元画像は 1536 x 1024
-    */
-    .hero-stage {
-      position: relative;
-      width: min(100vw, calc(100vh * 1.5));
-      height: min(66.666vw, 100vh);
-      max-width: 1536px;
-      max-height: 1024px;
-      background: url("welcome-hero.png") center center / cover no-repeat;
-      box-shadow: 0 30px 80px rgba(16, 46, 109, 0.08);
-      overflow: hidden;
-    }
-
-    /*
-      画像上の透明クリック領域
-      生成画像に寄せるため、見た目は基本いじらない
-    */
-    .hotspot {
-      position: absolute;
-      display: block;
-      border-radius: 24px;
-      background: transparent;
-      text-indent: -9999px;
-      overflow: hidden;
-      z-index: 5;
-    }
-
-    .hotspot:hover {
-      background: rgba(255,255,255,0.06);
-      outline: 2px solid rgba(255,255,255,0.18);
-      outline-offset: -2px;
-      transition: 0.2s ease;
-    }
-
-    /* 新規登録ボタン領域 */
-    .hotspot-signup {
-      left: 74.2%;
-      top: 34.3%;
-      width: 20.3%;
-      height: 7.7%;
-      border-radius: 18px;
-    }
-
-    /* ログインボタン領域 */
-    .hotspot-login {
-      left: 74.2%;
-      top: 44.4%;
-      width: 20.3%;
-      height: 7.3%;
-      border-radius: 18px;
-    }
-
-    /* ゲストボタン領域 */
-    .hotspot-guest {
-      left: 77.1%;
-      top: 53.6%;
-      width: 15.7%;
-      height: 4.6%;
-      border-radius: 14px;
-    }
-
-    /* 下に少し誘導したいときの透明リンク */
-    .hotspot-scroll {
-      left: 46.9%;
-      top: 89.2%;
-      width: 6.5%;
-      height: 6.0%;
-      border-radius: 30px;
-    }
-
-    /*
-      モバイル・小さい画面では
-      比率優先で全体を縮める
-    */
-    @media (max-width: 1200px) {
-      .hero-stage {
-        width: 100vw;
-        height: calc(100vw / 1.5);
-        max-height: none;
-      }
-
-      .hero-wrap {
-        min-height: auto;
-        padding: 0;
-      }
-    }
-
-    /*
-      かなり縦長のスマホ向け
-      画面いっぱいに表示しつつ、
-      スクロールできるようにする
-    */
-    @media (max-width: 768px) {
-      .hero-wrap {
-        align-items: flex-start;
-      }
-
-      .hero-stage {
-        width: 100vw;
-        height: calc(100vw / 1.5);
-        min-height: 0;
-      }
-    }
-
-    /*
-      下の説明セクション
-      必要最低限だけ置いておく
-      ただし主役は画像なので静かにする
-    */
-    .after-section {
-      width: 100%;
-      padding: 80px 20px 110px;
-      background: linear-gradient(180deg, #edf4fd 0%, #e7f0fb 100%);
-    }
-
-    .after-inner {
-      width: min(100%, 1100px);
-      margin: 0 auto;
-    }
-
-    .after-card {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(255,255,255,0.9);
-      border-radius: 32px;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 42px 34px;
-    }
-
-    .after-label {
-      display: inline-block;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(37, 99, 235, 0.08);
-      color: #2563eb;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      margin-bottom: 18px;
-    }
-
-    .after-title {
-      margin: 0 0 14px;
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: 1.2;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      color: #113475;
-    }
-
-    .after-text {
-      margin: 0;
-      font-size: 17px;
-      line-height: 1.9;
-      color: #526b95;
-      font-weight: 600;
-    }
-
-    .after-actions {
-      margin-top: 28px;
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .after-btn {
-      min-height: 54px;
-      padding: 0 22px;
-      border-radius: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-      font-weight: 800;
-      text-decoration: none;
-      transition: 0.2s ease;
-    }
-
-    .after-btn.primary {
-      background: linear-gradient(135deg, #2563eb, #60a5fa);
-      color: white;
-      box-shadow: 0 16px 32px rgba(37, 99, 235, 0.22);
-    }
-
-    .after-btn.secondary {
-      background: rgba(255,255,255,0.86);
-      color: #18448f;
-      border: 1px solid rgba(148, 163, 184, 0.22);
-    }
-
-    .after-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    @media (max-width: 768px) {
-      .after-section {
-        padding: 56px 16px 86px;
-      }
-
-      .after-card {
-        padding: 28px 20px;
-        border-radius: 24px;
-      }
-
-      .after-text {
-        font-size: 15px;
-      }
-
-      .after-actions {
-        flex-direction: column;
-      }
-
-      .after-btn {
-        width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="welcome.css">
 </head>
+
 <body>
+
   <main class="welcome-page">
 
-    <!-- 1画面目：生成画像をそのまま主役にする -->
-    <section class="hero-wrap">
-      <div class="hero-stage" aria-label="簿記マスターズ ランディングページ">
+    <section class="hero-section">
+      <div class="hero-bg"></div>
+      <div class="hero-light hero-light-one"></div>
+      <div class="hero-light hero-light-two"></div>
+      <div class="hero-road"></div>
 
-        <!-- 透明クリック領域 -->
-        <!-- signup.html / login.html が未作成なら一旦 index.html にしてOK -->
-        <a href="signup.html" class="hotspot hotspot-signup">新規登録</a>
-        <a href="login.html" class="hotspot hotspot-login">ログイン</a>
-        <a href="index.html" class="hotspot hotspot-guest">ゲストで試してみる</a>
-        <a href="#about" class="hotspot hotspot-scroll">SCROLL</a>
+      <div class="hero-inner">
+
+        <div class="hero-left">
+          <div class="brand-pill">
+            <div class="brand-mark">
+              <span></span>
+            </div>
+            <div>
+              <p class="brand-name">簿記マスターズ</p>
+              <p class="brand-sub">BOKI MASTERS</p>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <p class="hero-label">STUDY MANAGEMENT APP</p>
+            <h1>
+              続けられる人が、<br>
+              <span>合格に一番近い。</span>
+            </h1>
+            <p class="hero-text">
+              学習記録、問題演習、復習、やること管理。<br>
+              簿記学習を止めないためのアプリ。
+            </p>
+          </div>
+
+          <div class="hero-tags">
+            <span>学習記録</span>
+            <span>問題演習</span>
+            <span>復習</span>
+            <span>タスク管理</span>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="auth-card">
+            <div class="auth-icon">
+              <span></span>
+            </div>
+
+            <h2>学習を始める</h2>
+            <p>
+              アカウントを作成すると、学習データを保存して続きから使えます。
+            </p>
+
+            <div class="auth-actions">
+              <a href="signup.html" class="auth-btn primary">新規登録</a>
+              <a href="login.html" class="auth-btn secondary">ログイン</a>
+              <a href="index.html" class="guest-link">ゲストで試してみる</a>
+            </div>
+          </div>
+        </div>
 
       </div>
     </section>
 
-    <!-- 2画面目：静かな補足 -->
-    <section class="after-section" id="about">
-      <div class="after-inner">
-        <div class="after-card">
-          <div class="after-label">ABOUT</div>
-          <h2 class="after-title">迷わず学び、継続できる簿記学習へ。</h2>
-          <p class="after-text">
-            学習記録、問題演習、復習、やること管理をひとつにまとめ、
-            「今日なにをすればいいか」がすぐ分かるように設計しています。
-            続けやすさを最優先にした簿記学習アプリです。
-          </p>
+    <section class="feature-section">
+      <div class="feature-inner">
 
-          <div class="after-actions">
-            <a href="signup.html" class="after-btn primary">新規登録</a>
-            <a href="login.html" class="after-btn secondary">ログイン</a>
+        <div class="section-head">
+          <p>ABOUT</p>
+          <h2>迷わず学び、確実に積み上げる。</h2>
+          <span>
+            簿記マスターズは、毎日の勉強を見える化し、問題演習と復習まで一つにまとめた学習アプリです。
+          </span>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-number">01</div>
+            <h3>学習記録を見える化</h3>
+            <p>今日・今週・累計の勉強時間を確認。努力が数字で残るから続けやすい。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-number">02</div>
+            <h3>分野別に問題演習</h3>
+            <p>基礎、商品売買、決算など、分野ごとに苦手をつぶせる。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-number">03</div>
+            <h3>間違いを復習</h3>
+            <p>間違えた問題を記録して、あとから集中的に復習できる。</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-number">04</div>
+            <h3>やること管理</h3>
+            <p>その日にやる勉強を整理して、迷わず始められる状態を作る。</p>
           </div>
         </div>
+
       </div>
     </section>
 
   </main>
+
 </body>
 </html>
