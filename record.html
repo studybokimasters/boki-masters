@@ -1,987 +1,1009 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>学習記録</title>
 
-  <title>学習記録 | 簿記マスターズ</title>
+  <link rel="stylesheet" href="style.css">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700;900&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* =====================
+       Record Page Only
+       既存デザインに統一するための記録ページ専用CSS
+    ===================== */
+
+    .record-main-card {
+      margin-bottom: 22px;
+    }
+
+    .record-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .record-wide-card {
+      margin-top: 18px;
+    }
+
+    .record-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .record-card-title h3 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .record-card-title p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .record-small-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-faint);
+    }
+
+    .record-big-value {
+      margin: 0;
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .record-blue-value {
+      color: var(--primary);
+    }
+
+    .record-timer-display {
+      margin: 20px 0 18px;
+      text-align: center;
+      font-size: clamp(46px, 7vw, 68px);
+      font-weight: 900;
+      letter-spacing: -0.07em;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .record-select {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: rgba(255,255,255,0.82);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.88),
+        0 6px 18px rgba(15, 23, 42, 0.03);
+    }
+
+    .record-timer-buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .record-status-text {
+      margin: 14px 0 0;
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    .record-info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .record-info-box {
+      border-radius: 18px;
+      padding: 16px;
+      background: rgba(248, 251, 255, 0.82);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+    }
+
+    .record-info-box span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-faint);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .record-info-box strong {
+      display: block;
+      color: var(--text);
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .record-chart-area {
+      margin-top: 12px;
+      padding-top: 8px;
+    }
+
+    .record-bars {
+      height: 240px;
+      display: grid;
+      grid-template-columns: repeat(14, 1fr);
+      align-items: end;
+      gap: 8px;
+      padding: 18px 4px 0;
+      border-radius: 22px;
+      background:
+        linear-gradient(to top, rgba(148, 163, 184, 0.14) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(248, 251, 255, 0.65), rgba(255,255,255,0.2));
+      background-size: 100% 25%;
+      overflow: hidden;
+    }
+
+    .record-bar-item {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      height: 100%;
+    }
+
+    .record-bar {
+      width: 100%;
+      max-width: 28px;
+      min-height: 4px;
+      border-radius: 999px 999px 6px 6px;
+      background: linear-gradient(180deg, var(--primary-3), var(--primary));
+      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+      transition: height 0.3s ease;
+    }
+
+    .record-bar.empty {
+      background: rgba(148, 163, 184, 0.22);
+      box-shadow: none;
+    }
+
+    .record-bar.today {
+      background: linear-gradient(180deg, #60a5fa, #1d4ed8);
+    }
+
+    .record-bar-date {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+
+    .record-month-detail {
+      display: none;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .record-month-detail.show {
+      display: grid;
+    }
+
+    .record-detail-btn {
+      min-height: 40px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffffff, #f8fafc);
+      color: var(--primary);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow:
+        0 10px 22px rgba(15, 23, 42, 0.06),
+        inset 0 1px 0 rgba(255,255,255,0.95);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .record-distribution-layout {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .record-donut {
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+      background: conic-gradient(var(--primary) 0deg, #e2e8f0 0deg);
+      box-shadow:
+        0 18px 42px rgba(37, 99, 235, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.88);
+    }
+
+    .record-donut-inner {
+      width: 62%;
+      height: 62%;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(255,255,255,0.96);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.95);
+      text-align: center;
+    }
+
+    .record-donut-inner span {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text-faint);
+    }
+
+    .record-donut-inner strong {
+      margin-top: 4px;
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -0.04em;
+    }
+
+    .record-distribution-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .record-distribution-item {
+      display: grid;
+      grid-template-columns: 12px 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .record-distribution-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--primary);
+    }
+
+    .record-distribution-name {
+      min-width: 0;
+    }
+
+    .record-distribution-name strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .record-distribution-name span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-soft);
+    }
+
+    .record-distribution-percent {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .record-empty-text {
+      color: var(--text-soft);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.8;
+    }
+
+    .record-goal-form {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .record-goal-form input {
+      flex: 1;
+      min-width: 130px;
+    }
+
+    .record-message {
+      margin-top: 14px;
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 768px) {
+      .record-summary-grid,
+      .record-info-row,
+      .record-month-detail,
+      .record-distribution-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .record-timer-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .record-bars {
+        gap: 5px;
+        height: 210px;
+      }
+
+      .record-bar-date {
+        font-size: 10px;
+      }
+
+      .record-card-head {
+        flex-direction: column;
+      }
+    }
+  </style>
 </head>
 
-<body class="record-dashboard-body">
+<body>
 
-  <main class="record-dashboard-page">
-
-    <header class="record-top-header">
-      <a href="welcome.html" class="record-logo-link">
-        <img src="logo.png" alt="簿記マスターズ" class="record-logo-img">
-      </a>
-
-      <div class="record-top-actions">
-        <button class="record-icon-button" type="button" aria-label="通知">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M18 9.5C18 6.2 15.7 4 12 4S6 6.2 6 9.5V13L4.5 16H19.5L18 13V9.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-            <path d="M9.5 18C10 19.2 10.8 20 12 20C13.2 20 14 19.2 14.5 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-
-        <button class="record-level-button" id="recordLevelButton" type="button">
-          <span id="recordCurrentLevel">3級</span>
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+  <div class="header compact-header">
+    <div class="header-inner compact-header-inner">
+      <div class="topbar-row">
+        <div class="level-switch">
+          <button id="level3Btn" onclick="switchRecordLevel('3級')">3級</button>
+          <button id="level2Btn" onclick="switchRecordLevel('2級')">2級</button>
+        </div>
       </div>
-    </header>
 
-    <section class="record-title-section">
-      <div class="record-title-mark"></div>
-      <div>
-        <h1>学習記録</h1>
-        <p>積み上げを、見える力に。</p>
+      <div class="page-heading compact-page-heading">
+        <h2 class="page-title">学習記録</h2>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="record-grid">
+  <div class="container">
 
-      <article class="record-card record-trend-card">
+    <div class="card main-progress-card record-main-card">
+      <div class="main-progress-head">
+        <h3>今日の学習</h3>
+        <div id="todayGoalText" class="main-progress-value">0 / 120分</div>
+      </div>
+
+      <div class="progress-bar large">
+        <div id="todayGoalFill"></div>
+      </div>
+
+      <p class="record-message" id="todayMessage">
+        今日の学習時間がここに反映されます。
+      </p>
+    </div>
+
+    <div class="record-summary-grid">
+
+      <div class="card">
         <div class="record-card-head">
           <div class="record-card-title">
-            <div class="record-title-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M4 17L9 12L13 15L20 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M16 7H20V11" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <div>
-              <h2>学習推移</h2>
-              <p>直近14日間の学習時間を確認できます</p>
-            </div>
-          </div>
-
-          <button class="record-detail-button" id="monthDetailToggle" type="button">
-            月別を見る
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-
-        <div class="record-summary-row">
-          <div class="record-mini-stat">
-            <span>今日</span>
-            <strong id="todayStudyTime">0分</strong>
-          </div>
-
-          <div class="record-mini-stat">
-            <span>今週</span>
-            <strong id="weekStudyTime">0分</strong>
-          </div>
-
-          <div class="record-mini-stat total">
-            <span>累計</span>
-            <strong id="totalStudyTimeSmall">0分</strong>
+            <h3>勉強タイマー</h3>
+            <p>分野を選んで記録すると、推移と時間配分に反映されます</p>
           </div>
         </div>
 
-        <div class="record-chart-wrap">
-          <svg id="learningTrendChart" class="record-trend-svg" viewBox="0 0 900 360" preserveAspectRatio="none"></svg>
+        <select id="studyCategorySelect" class="record-select">
+          <option value="基礎">基礎</option>
+          <option value="商品売買">商品売買</option>
+          <option value="決算">決算</option>
+          <option value="問題演習">問題演習</option>
+          <option value="復習">復習</option>
+          <option value="その他">その他</option>
+        </select>
+
+        <div id="timer" class="record-timer-display">00:00:00</div>
+
+        <div class="record-timer-buttons">
+          <button onclick="startTimer()">開始</button>
+          <button onclick="stopTimer()">停止</button>
+          <button onclick="resetTimer()" class="secondary-btn">リセット</button>
         </div>
 
-        <div class="record-chart-footer">
-          <div class="record-legend">
-            <span class="legend-dot bar"></span>
-            1日の学習時間
-          </div>
+        <p id="timerStatusText" class="record-status-text">
+          学習分野を選んで開始してください。
+        </p>
+      </div>
 
-          <div class="record-legend">
-            <span class="legend-dot line"></span>
-            7日間の平均
-          </div>
-        </div>
-
-        <div class="record-month-detail" id="monthDetailPanel">
-          <div class="month-detail-card">
-            <span>今月</span>
-            <strong id="monthStudyTime">0分</strong>
-          </div>
-
-          <div class="month-detail-card">
-            <span>月間目標</span>
-            <strong id="monthGoalTime">40時間</strong>
-          </div>
-
-          <div class="month-detail-card">
-            <span>達成率</span>
-            <strong id="monthGoalPercent">0%</strong>
-          </div>
-        </div>
-
-        <div class="record-message" id="trendMessage">
-          今日の学習を記録すると、ここに推移が反映されます。
-        </div>
-      </article>
-
-      <article class="record-card record-timer-card" style="padding: 28px 30px;">
-        <div class="small-card-head">
-          <div class="record-title-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 8V12L15 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-
-          <div>
-            <h2>勉強タイマー</h2>
-            <p>記録するとグラフに反映されます</p>
-          </div>
-        </div>
-
-        <div style="margin-top: 22px;">
-          <select id="studyCategorySelect" style="
-            width: 100%;
-            min-height: 48px;
-            padding: 0 14px;
-            border-radius: 16px;
-            border: 1px solid rgba(148, 163, 184, 0.22);
-            background: rgba(255,255,255,0.82);
-            color: #102a5c;
-            font-weight: 800;
-            font-size: 14px;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
-          ">
-            <option value="基礎">基礎</option>
-            <option value="商品売買">商品売買</option>
-            <option value="決算">決算</option>
-            <option value="その他">その他</option>
-          </select>
-
-          <div id="timer" style="
-            margin: 24px 0 20px;
-            text-align: center;
-            font-size: clamp(44px, 6vw, 64px);
-            line-height: 1;
-            font-weight: 900;
-            letter-spacing: -0.06em;
-            color: #0b2d6f;
-          ">00:00:00</div>
-
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-            <button id="timerStartButton" type="button">開始</button>
-            <button id="timerStopButton" type="button">停止</button>
-            <button id="timerResetButton" type="button" class="secondary-btn">リセット</button>
-          </div>
-
-          <p id="timerStatusText" style="
-            margin: 16px 0 0;
-            color: #7184a5;
-            font-size: 13px;
-            font-weight: 800;
-            line-height: 1.7;
-          ">学習分野を選んで開始してください。</p>
-        </div>
-      </article>
-
-      <article class="record-card record-distribution-card">
-        <div class="record-card-head compact">
+      <div class="card">
+        <div class="record-card-head">
           <div class="record-card-title">
-            <div class="record-title-icon">
-              <svg viewBox="0 0 24 24" fill="none">
-                <path d="M12 3V12H21C20.5 17 16.7 21 12 21C7 21 3 17 3 12C3 7.3 7 3.5 12 3Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-                <path d="M14 3.3C17.4 4 20 6.6 20.7 10H14V3.3Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <div>
-              <h2>時間配分</h2>
-              <p>累計学習時間の分野別割合</p>
-            </div>
+            <h3>今週の進捗</h3>
+            <p>週の目標に対する達成度</p>
           </div>
         </div>
 
-        <div class="distribution-layout">
-          <div class="donut-chart" id="timeDonut">
-            <div class="donut-center">
-              <span>累計</span>
-              <strong id="donutTotalTime">0分</strong>
-            </div>
-          </div>
+        <p id="weeklyProgressText" class="card-value">0時間0分 / 10時間（0%）</p>
 
-          <div class="distribution-list" id="distributionList"></div>
-        </div>
-      </article>
-
-      <article class="record-card countdown-card">
-        <div class="small-card-head">
-          <div class="record-title-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="4" y="5" width="16" height="15" rx="3" stroke="currentColor" stroke-width="2"/>
-              <path d="M8 3V7M16 3V7M4 10H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-
-          <div>
-            <h2>カウントダウン</h2>
-            <p>次回の試験まで</p>
-          </div>
+        <div class="progress-bar" style="margin-top: 14px;">
+          <div id="progressFill"></div>
         </div>
 
-        <div class="countdown-content">
-          <div class="calendar-illustration">
-            <div class="calendar-page">
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-            <div class="calendar-clock"></div>
-          </div>
+        <div class="record-goal-form">
+          <input type="number" id="weeklyGoalInput" min="1" placeholder="目標時間">
+          <button onclick="saveWeeklyGoalAndRender()">保存</button>
+        </div>
 
-          <div class="countdown-number">
-            <span>あと</span>
-            <strong id="examDaysLeft">--</strong>
-            <em>日</em>
+        <p id="weeklyGoalDisplay" class="record-message">
+          今週の目標: 10時間
+        </p>
+      </div>
+
+      <div class="card streak-card">
+        <span class="record-small-label">連続日数</span>
+        <p id="streak" class="streak-value">0日連続</p>
+      </div>
+
+      <div class="card">
+        <span class="record-small-label">累計時間</span>
+        <p id="totalTime" class="record-big-value">0時間0分</p>
+      </div>
+
+      <div class="card">
+        <span class="record-small-label">試験まで</span>
+        <p id="countdown" class="record-big-value">未設定</p>
+
+        <div class="inline-form" style="margin-top: 14px;">
+          <input type="date" id="examDate">
+          <button onclick="saveExamDateAndRender()">保存</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="record-small-label">今月の学習</span>
+        <p id="monthStudyTime" class="record-big-value record-blue-value">0時間0分</p>
+        <p class="record-message" id="monthMessage">
+          月ごとの積み上げを確認できます。
+        </p>
+      </div>
+
+    </div>
+
+    <div class="card record-wide-card">
+      <div class="record-card-head">
+        <div class="record-card-title">
+          <h3>学習推移</h3>
+          <p>直近14日間の学習時間</p>
+        </div>
+
+        <button class="record-detail-btn" onclick="toggleMonthDetail()">
+          月別を見る
+        </button>
+      </div>
+
+      <div class="record-info-row">
+        <div class="record-info-box">
+          <span>今日</span>
+          <strong id="recordTodayTime">0分</strong>
+        </div>
+
+        <div class="record-info-box">
+          <span>今週</span>
+          <strong id="recordWeeklyTime">0分</strong>
+        </div>
+      </div>
+
+      <div class="record-chart-area">
+        <div id="recordBars" class="record-bars"></div>
+      </div>
+
+      <div id="monthDetailPanel" class="record-month-detail">
+        <div class="record-info-box">
+          <span>今月</span>
+          <strong id="monthDetailTime">0分</strong>
+        </div>
+
+        <div class="record-info-box">
+          <span>月間目安</span>
+          <strong>40時間</strong>
+        </div>
+
+        <div class="record-info-box">
+          <span>達成率</span>
+          <strong id="monthDetailPercent">0%</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="card record-wide-card">
+      <div class="record-card-head">
+        <div class="record-card-title">
+          <h3>時間配分</h3>
+          <p>どの分野に時間を使ったかを確認できます</p>
+        </div>
+      </div>
+
+      <div class="record-distribution-layout">
+        <div id="recordDonut" class="record-donut">
+          <div class="record-donut-inner">
+            <span>累計</span>
+            <strong id="recordDonutTotal">0分</strong>
           </div>
         </div>
 
-        <div class="exam-date-text" id="examDateText">
-          試験日を設定してください
-        </div>
-      </article>
+        <div id="recordDistributionList" class="record-distribution-list"></div>
+      </div>
+    </div>
 
-      <article class="record-card weekly-goal-card">
-        <div class="small-card-head">
-          <div class="record-title-icon">
-            <svg viewBox="0 0 24 24" fill="none">
-              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/>
-              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
-              <path d="M12 2V5M22 12H19M12 22V19M2 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
+  </div>
 
-          <div>
-            <h2>今週の目標</h2>
-            <p>記録ページで目標時間を変更できます</p>
-          </div>
-        </div>
+  <div class="nav">
+    <a href="index.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 10.5 12 3l9 7.5v9.5a1 1 0 0 1-1 1h-5.5v-6h-5v6H4a1 1 0 0 1-1-1z"/>
+      </svg>
+      <span>ホーム</span>
+    </a>
 
-        <div class="goal-layout">
-          <div class="goal-ring" id="weeklyGoalRing">
-            <div>
-              <strong id="weeklyGoalPercent">0%</strong>
-              <span>達成</span>
-            </div>
-          </div>
+    <a href="practice.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h9l5 5v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm8 1.5V9h4.5"/>
+        <path d="M8 13h8M8 17h5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>練習</span>
+    </a>
 
-          <div class="goal-info">
-            <div>
-              <span>目標時間</span>
-              <strong id="weeklyGoalTime">10時間00分</strong>
-            </div>
+    <a href="record.html" class="active">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 20V10m7 10V4m7 16v-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>記録</span>
+    </a>
 
-            <div>
-              <span>今週の学習時間</span>
-              <strong id="weeklyStudyTime">0分</strong>
-            </div>
+    <a href="tasks.html">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 4h6m-9 4h12M6 12h12M6 16h8" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M4 4h1M4 8h1M4 12h1M4 16h1" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>やること</span>
+    </a>
+  </div>
 
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-              <input id="weeklyGoalInput" type="number" min="1" placeholder="例: 10" style="
-                flex: 1;
-                min-width: 140px;
-                min-height: 44px;
-                padding: 0 14px;
-                border-radius: 14px;
-                border: 1px solid rgba(148, 163, 184, 0.22);
-                background: rgba(255,255,255,0.82);
-                color: #102a5c;
-                font-weight: 800;
-              ">
-              <button id="weeklyGoalSaveButton" type="button">保存</button>
-            </div>
-
-            <div class="goal-progress-bar">
-              <span id="weeklyProgressBar"></span>
-            </div>
-
-            <p id="weeklyGoalMessage">
-              今週の目標に向けて進めましょう。
-            </p>
-          </div>
-        </div>
-      </article>
-
-    </section>
-
-    <nav class="record-bottom-nav">
-      <a href="index.html" class="record-nav-item">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 11L12 4L20 11V20H15V14H9V20H4V11Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-        </svg>
-        <span>ホーム</span>
-      </a>
-
-      <a href="practice.html" class="record-nav-item">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 19L7 14L16.5 4.5C17.3 3.7 18.7 3.7 19.5 4.5C20.3 5.3 20.3 6.7 19.5 7.5L10 17L5 19Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-        </svg>
-        <span>練習</span>
-      </a>
-
-      <a href="record.html" class="record-nav-item active">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M5 19V11M12 19V5M19 19V9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-        </svg>
-        <span>記録</span>
-      </a>
-
-      <a href="tasks.html" class="record-nav-item">
-        <svg viewBox="0 0 24 24" fill="none">
-          <rect x="5" y="4" width="14" height="16" rx="3" stroke="currentColor" stroke-width="2"/>
-          <path d="M9 9H15M9 13H15M9 17H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span>やること</span>
-      </a>
-    </nav>
-
-  </main>
+  <script src="app.js"></script>
 
   <script>
-    (() => {
-      const $ = (selector) => document.querySelector(selector);
+    function recordPad(number) {
+      return String(number).padStart(2, "0");
+    }
 
-      let timerInterval = null;
-      let currentLevel = getLevel();
+    function recordTodayISO() {
+      const date = new Date();
+      return `${date.getFullYear()}-${recordPad(date.getMonth() + 1)}-${recordPad(date.getDate())}`;
+    }
 
-      function getLevel() {
-        return localStorage.getItem("level") || "3級";
+    function recordToISO(date) {
+      return `${date.getFullYear()}-${recordPad(date.getMonth() + 1)}-${recordPad(date.getDate())}`;
+    }
+
+    function recordFormatMinutes(minutes) {
+      const total = Math.max(0, Math.floor(Number(minutes) || 0));
+      const hours = Math.floor(total / 60);
+      const mins = total % 60;
+
+      if (hours <= 0) return `${mins}分`;
+      return `${hours}時間${mins}分`;
+    }
+
+    function recordFormatTimer(seconds) {
+      const sec = Math.max(0, Math.floor(Number(seconds) || 0));
+      const h = recordPad(Math.floor(sec / 3600));
+      const m = recordPad(Math.floor((sec % 3600) / 60));
+      const s = recordPad(sec % 60);
+
+      return `${h}:${m}:${s}`;
+    }
+
+    function getRecordLogKey() {
+      return getLevelKey("studyLogs");
+    }
+
+    function getRecordLogs() {
+      try {
+        return JSON.parse(localStorage.getItem(getRecordLogKey()) || "[]");
+      } catch {
+        return [];
       }
-
-      function setLevel(level) {
-        localStorage.setItem("level", level);
-        currentLevel = level;
-      }
-
-      function levelKey(key) {
-        return `${currentLevel}_${key}`;
-      }
-
-      function getData(key) {
-        return Number(localStorage.getItem(levelKey(key))) || 0;
-      }
-
-      function setData(key, value) {
-        localStorage.setItem(levelKey(key), value);
-      }
-
-      function pad(number) {
-        return String(number).padStart(2, "0");
-      }
-
-      function formatMinutes(minutes) {
-        const total = Math.max(0, Math.floor(Number(minutes) || 0));
-        const hours = Math.floor(total / 60);
-        const mins = total % 60;
-
-        if (hours <= 0) return `${mins}分`;
-        if (mins === 0) return `${hours}時間`;
-        return `${hours}時間${mins}分`;
-      }
-
-      function formatMinutesSpaced(minutes) {
-        const total = Math.max(0, Math.floor(Number(minutes) || 0));
-        const hours = Math.floor(total / 60);
-        const mins = total % 60;
-
-        if (hours <= 0) return `${mins}分`;
-        return `${hours}時間 ${pad(mins)}分`;
-      }
-
-      function formatTimer(seconds) {
-        const sec = Math.max(0, Math.floor(Number(seconds) || 0));
-        const h = pad(Math.floor(sec / 3600));
-        const m = pad(Math.floor((sec % 3600) / 60));
-        const s = pad(sec % 60);
-
-        return `${h}:${m}:${s}`;
-      }
-
-      function toISODate(date) {
-        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-      }
-
-      function todayISO() {
-        return toISODate(new Date());
-      }
-
-      function todayString() {
-        return new Date().toDateString();
-      }
-
-      function getWeekStartString() {
-        const now = new Date();
-        const day = now.getDay();
-        const diff = now.getDate() - day;
-        const start = new Date(now);
-
-        start.setDate(diff);
-        start.setHours(0, 0, 0, 0);
-
-        return start.toDateString();
-      }
-
-      function checkDateReset() {
-        const key = levelKey("lastStudyDate");
-        const saved = localStorage.getItem(key);
-        const today = todayString();
-
-        if (saved !== today) {
-          setData("todayStudyTime", 0);
-          setData("elapsedTime", 0);
-          localStorage.setItem(key, today);
-          localStorage.removeItem(levelKey("startTime"));
-        }
-      }
-
-      function checkWeekReset() {
-        const key = levelKey("weekStart");
-        const saved = localStorage.getItem(key);
-        const now = getWeekStartString();
-
-        if (saved !== now) {
-          setData("weeklyStudyTime", 0);
-          localStorage.setItem(key, now);
-        }
-      }
-
-      function getWeeklyGoalHours() {
-        return Number(localStorage.getItem(levelKey("weeklyGoal"))) || 10;
-      }
-
-      function setWeeklyGoalHours(hours) {
-        localStorage.setItem(levelKey("weeklyGoal"), hours);
-      }
-
-      function getMonthGoalMinutes() {
-        return 40 * 60;
-      }
-
-      function getStudyLogs() {
-        try {
-          return JSON.parse(localStorage.getItem(levelKey("studyLogs")) || "[]");
-        } catch {
-          return [];
-        }
-      }
-
-      function saveStudyLogs(logs) {
-        localStorage.setItem(levelKey("studyLogs"), JSON.stringify(logs));
-      }
-
-      function addStudyLog(minutes, category) {
-        if (!minutes || minutes <= 0) return;
-
-        const logs = getStudyLogs();
-
-        logs.push({
-          date: todayISO(),
-          minutes,
-          category: category || "その他",
-          level: currentLevel,
-          createdAt: new Date().toISOString()
-        });
-
-        saveStudyLogs(logs);
-      }
-
-      function getDateRange(days) {
-        const today = new Date();
-        const result = [];
-
-        for (let i = days - 1; i >= 0; i--) {
-          const date = new Date(today);
-          date.setDate(today.getDate() - i);
-          result.push(toISODate(date));
-        }
-
-        return result;
-      }
-
-      function getMinutesByDate(logs, date) {
-        return logs
-          .filter(log => log.date === date)
-          .reduce((sum, log) => sum + Number(log.minutes || 0), 0);
-      }
-
-      function getMonthMinutesFromLogs(logs) {
-        const today = new Date();
-
-        return logs.reduce((sum, log) => {
-          const date = new Date(log.date);
-
-          if (
-            date.getFullYear() === today.getFullYear() &&
-            date.getMonth() === today.getMonth()
-          ) {
-            return sum + Number(log.minutes || 0);
-          }
-
-          return sum;
-        }, 0);
-      }
-
-      function getMovingAverage(values, windowSize = 7) {
-        return values.map((_, index) => {
-          const start = Math.max(0, index - windowSize + 1);
-          const target = values.slice(start, index + 1);
-          const sum = target.reduce((a, b) => a + b, 0);
-
-          return target.length ? sum / target.length : 0;
-        });
-      }
-
-      function getShortDate(dateString) {
-        const date = new Date(dateString);
-        return `${date.getMonth() + 1}/${date.getDate()}`;
-      }
-
-      function getJapaneseDay(dateString) {
-        const days = ["日", "月", "火", "水", "木", "金", "土"];
-        const date = new Date(dateString);
-        return days[date.getDay()];
-      }
-
-      function renderTrendChart() {
-        const svg = $("#learningTrendChart");
-        if (!svg) return;
-
-        const logs = getStudyLogs();
-        const dates = getDateRange(14);
-
-        let values = dates.map(date => {
-          return getMinutesByDate(logs, date) / 60;
-        });
-
-        const todayMinutes = getData("todayStudyTime");
-
-        if (values.every(value => value === 0) && todayMinutes > 0) {
-          values[values.length - 1] = todayMinutes / 60;
-        }
-
-        const avgValues = getMovingAverage(values, 7);
-        const maxValue = Math.max(4, Math.ceil(Math.max(...values, ...avgValues) + 1));
-
-        const width = 900;
-        const height = 360;
-        const padding = {
-          top: 26,
-          right: 28,
-          bottom: 68,
-          left: 54
-        };
-
-        const chartWidth = width - padding.left - padding.right;
-        const chartHeight = height - padding.top - padding.bottom;
-        const barGap = chartWidth / dates.length;
-        const barWidth = Math.min(34, barGap * 0.42);
-
-        const y = (value) => {
-          return padding.top + chartHeight - (value / maxValue) * chartHeight;
-        };
-
-        const x = (index) => {
-          return padding.left + barGap * index + barGap / 2;
-        };
-
-        let html = "";
-
-        for (let i = 0; i <= 4; i++) {
-          const value = (maxValue / 4) * i;
-          const yy = y(value);
-
-          html += `
-            <line x1="${padding.left}" y1="${yy}" x2="${width - padding.right}" y2="${yy}" class="chart-grid-line"></line>
-            <text x="${padding.left - 16}" y="${yy + 5}" class="chart-y-label" text-anchor="end">${Math.round(value)}h</text>
-          `;
-        }
-
-        values.forEach((value, index) => {
-          const barHeight = Math.max(0, chartHeight - (y(value) - padding.top));
-          const bx = x(index) - barWidth / 2;
-          const by = y(value);
-          const isToday = index === values.length - 1;
-
-          html += `
-            <rect
-              x="${bx}"
-              y="${by}"
-              width="${barWidth}"
-              height="${barHeight}"
-              rx="8"
-              class="${isToday ? "chart-bar today" : "chart-bar"}"
-            ></rect>
-          `;
-
-          html += `
-            <text x="${x(index)}" y="${height - 34}" class="chart-x-label" text-anchor="middle">${getShortDate(dates[index])}</text>
-            <text x="${x(index)}" y="${height - 12}" class="chart-x-day" text-anchor="middle">${getJapaneseDay(dates[index])}</text>
-          `;
-        });
-
-        const points = avgValues.map((value, index) => {
-          return `${x(index)},${y(value)}`;
-        }).join(" ");
-
-        html += `<polyline points="${points}" class="chart-line"></polyline>`;
-
-        avgValues.forEach((value, index) => {
-          html += `
-            <circle
-              cx="${x(index)}"
-              cy="${y(value)}"
-              r="${index === avgValues.length - 1 ? 6 : 4}"
-              class="chart-line-point"
-            ></circle>
-          `;
-        });
-
-        const todayValue = values[values.length - 1];
-
-        if (todayValue > 0) {
-          const tx = x(values.length - 1);
-          const ty = y(todayValue);
-
-          html += `
-            <g class="chart-tooltip">
-              <rect x="${tx - 28}" y="${ty - 42}" width="56" height="30" rx="10"></rect>
-              <text x="${tx}" y="${ty - 22}" text-anchor="middle">${todayValue.toFixed(1)}h</text>
-            </g>
-          `;
-        }
-
-        svg.innerHTML = html;
-      }
-
-      function renderDistribution() {
-        const donut = $("#timeDonut");
-        const list = $("#distributionList");
-        if (!donut || !list) return;
-
-        const logs = getStudyLogs();
-        const totalMinutes = getData("studyTime");
-        const categories = {};
-
-        logs.forEach(log => {
-          const name = log.category || "その他";
-          categories[name] = (categories[name] || 0) + Number(log.minutes || 0);
-        });
-
-        if (Object.keys(categories).length === 0 && totalMinutes > 0) {
-          categories["学習時間"] = totalMinutes;
-        }
-
-        const entries = Object.entries(categories)
-          .filter(([, minutes]) => minutes > 0)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 5);
-
-        const realTotal = entries.reduce((sum, [, minutes]) => sum + minutes, 0);
-        const colors = ["#2f7df6", "#20bfd0", "#f4c34e", "#8d82f6", "#cbd5e1"];
-
-        if (realTotal <= 0) {
-          donut.style.background = "conic-gradient(#e7eef8 0deg 360deg)";
-          list.innerHTML = `
-            <div class="distribution-empty">
-              まだ学習記録がありません
-            </div>
-          `;
-          return;
-        }
-
-        let current = 0;
-
-        const gradients = entries.map(([, minutes], index) => {
-          const start = current;
-          const deg = (minutes / realTotal) * 360;
-          current += deg;
-
-          return `${colors[index]} ${start}deg ${current}deg`;
-        });
-
-        donut.style.background = `conic-gradient(${gradients.join(", ")})`;
-
-        list.innerHTML = entries.map(([name, minutes], index) => {
-          const percent = Math.round((minutes / realTotal) * 100);
-
-          return `
-            <div class="distribution-item">
-              <span class="distribution-color" style="background:${colors[index]}"></span>
-              <div>
-                <strong>${name}</strong>
-                <small>${formatMinutes(minutes)}</small>
-              </div>
-              <em>${percent}%</em>
-            </div>
-          `;
-        }).join("");
-      }
-
-      function renderWeeklyGoal() {
-        const weeklyMinutes = getData("weeklyStudyTime");
-        const goalHours = getWeeklyGoalHours();
-        const goalMinutes = goalHours * 60;
-        const percent = goalMinutes > 0
-          ? Math.min(Math.round((weeklyMinutes / goalMinutes) * 100), 100)
-          : 0;
-
-        $("#weeklyGoalTime").textContent = formatMinutesSpaced(goalMinutes);
-        $("#weeklyStudyTime").textContent = formatMinutesSpaced(weeklyMinutes);
-        $("#weeklyGoalPercent").textContent = `${percent}%`;
-        $("#weeklyProgressBar").style.width = `${percent}%`;
-        $("#weeklyGoalInput").value = goalHours;
-
-        $("#weeklyGoalRing").style.background =
-          `conic-gradient(#2f7df6 0deg ${percent * 3.6}deg, #e7eef8 ${percent * 3.6}deg 360deg)`;
-
-        const remaining = Math.max(goalMinutes - weeklyMinutes, 0);
-
-        $("#weeklyGoalMessage").textContent =
-          percent >= 100
-            ? "今週の目標を達成しました。かなり良いペースです。"
-            : `目標まであと ${formatMinutesSpaced(remaining)} です。`;
-      }
-
-      function renderCountdown() {
-        const saved = localStorage.getItem("examDate");
-        const daysEl = $("#examDaysLeft");
-        const textEl = $("#examDateText");
-
-        if (!saved) {
-          daysEl.textContent = "--";
-          textEl.textContent = "ホームで試験日を設定してください";
-          return;
-        }
-
-        const [year, month, day] = saved.split("-");
-        const exam = new Date(year, month - 1, day);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        const diff = Math.ceil((exam - today) / 86400000);
-
-        daysEl.textContent = diff < 0 ? 0 : diff;
-
-        const dateText =
-          `${exam.getFullYear()}年${exam.getMonth() + 1}月${exam.getDate()}日（${getJapaneseDay(saved)}）`;
-
-        textEl.textContent = `${dateText}　${currentLevel}`;
-      }
-
-      function renderMonthDetail() {
-        const logs = getStudyLogs();
-        const monthMinutes = Math.max(getMonthMinutesFromLogs(logs), getData("todayStudyTime"));
-        const monthGoalMinutes = getMonthGoalMinutes();
-        const percent = monthGoalMinutes > 0
-          ? Math.min(Math.round((monthMinutes / monthGoalMinutes) * 100), 100)
-          : 0;
-
-        $("#monthStudyTime").textContent = formatMinutesSpaced(monthMinutes);
-        $("#monthGoalTime").textContent = formatMinutesSpaced(monthGoalMinutes);
-        $("#monthGoalPercent").textContent = `${percent}%`;
-      }
-
-      function renderTimerDisplay() {
-        const timerEl = $("#timer");
-        if (!timerEl) return;
-
-        const startTime = Number(localStorage.getItem(levelKey("startTime"))) || 0;
-
-        if (startTime) {
-          const seconds = Math.floor((Date.now() - startTime) / 1000);
-          timerEl.textContent = formatTimer(seconds);
-          return;
-        }
-
-        timerEl.textContent = "00:00:00";
-      }
-
-      function startTimer() {
-        if (timerInterval) return;
-
-        localStorage.setItem(levelKey("startTime"), Date.now());
-
-        $("#timerStatusText").textContent = "計測中です。停止すると記録に反映されます。";
-
-        timerInterval = setInterval(renderTimerDisplay, 1000);
-        renderTimerDisplay();
-      }
-
-      function stopTimer() {
-        const startTime = Number(localStorage.getItem(levelKey("startTime"))) || 0;
-
-        if (!startTime) {
-          $("#timerStatusText").textContent = "まだタイマーが開始されていません。";
-          return;
-        }
-
-        const seconds = Math.floor((Date.now() - startTime) / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const category = $("#studyCategorySelect").value || "その他";
-
-        localStorage.removeItem(levelKey("startTime"));
-        setData("elapsedTime", 0);
-
-        if (timerInterval) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-        }
-
-        if (minutes <= 0) {
-          $("#timerStatusText").textContent = "1分未満のため、学習時間には追加されませんでした。";
-          renderTimerDisplay();
-          return;
-        }
-
-        setData("studyTime", getData("studyTime") + minutes);
-        setData("todayStudyTime", getData("todayStudyTime") + minutes);
-        setData("weeklyStudyTime", getData("weeklyStudyTime") + minutes);
-
-        addStudyLog(minutes, category);
-        updateStreak();
-
-        $("#timerStatusText").textContent =
-          `${category}を${formatMinutes(minutes)}記録しました。`;
-
-        renderTimerDisplay();
-        renderDashboard();
-      }
-
-      function resetTimer() {
-        localStorage.removeItem(levelKey("startTime"));
-        setData("elapsedTime", 0);
-
-        if (timerInterval) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-        }
-
-        $("#timerStatusText").textContent = "タイマーをリセットしました。";
-        renderTimerDisplay();
-      }
-
-      function updateStreak() {
-        const todayMinutes = getData("todayStudyTime");
-        let streak = Number(localStorage.getItem(levelKey("streak"))) || 0;
-
-        if (todayMinutes > 0) {
-          const today = todayString();
-          const last = localStorage.getItem(levelKey("lastStudyDateForStreak"));
-
-          if (!last) {
-            streak = 1;
-          } else if (last !== today) {
-            const yesterday = new Date();
-            yesterday.setDate(yesterday.getDate() - 1);
-
-            if (last === yesterday.toDateString()) {
-              streak += 1;
-            } else {
-              streak = 1;
-            }
-          }
-
-          localStorage.setItem(levelKey("streak"), streak);
-          localStorage.setItem(levelKey("lastStudyDateForStreak"), today);
-        }
-      }
-
-      function renderDashboard() {
-        checkDateReset();
-        checkWeekReset();
-
-        $("#recordCurrentLevel").textContent = currentLevel;
-
-        const totalMinutes = getData("studyTime");
-        const todayMinutes = getData("todayStudyTime");
-        const weeklyMinutes = getData("weeklyStudyTime");
-
-        $("#todayStudyTime").textContent = formatMinutesSpaced(todayMinutes);
-        $("#weekStudyTime").textContent = formatMinutesSpaced(weeklyMinutes);
-        $("#totalStudyTimeSmall").textContent = formatMinutesSpaced(totalMinutes);
-        $("#donutTotalTime").textContent = formatMinutesSpaced(totalMinutes);
-
-        renderTrendChart();
-        renderDistribution();
-        renderWeeklyGoal();
-        renderCountdown();
-        renderMonthDetail();
-
-        if (weeklyMinutes <= 0) {
-          $("#trendMessage").textContent =
-            "今日の学習を始めると、ここに推移が反映されます。";
-        } else {
-          $("#trendMessage").textContent =
-            `今週は${formatMinutesSpaced(weeklyMinutes)}学習しています。`;
-        }
-      }
-
-      function setupEvents() {
-        $("#monthDetailToggle").addEventListener("click", () => {
-          $("#monthDetailPanel").classList.toggle("show");
-          $("#monthDetailToggle").classList.toggle("open");
-        });
-
-        $("#recordLevelButton").addEventListener("click", () => {
-          const next = currentLevel === "3級" ? "2級" : "3級";
-          setLevel(next);
-
-          if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-          }
-
-          renderTimerDisplay();
-          renderDashboard();
-        });
-
-        $("#timerStartButton").addEventListener("click", startTimer);
-        $("#timerStopButton").addEventListener("click", stopTimer);
-        $("#timerResetButton").addEventListener("click", resetTimer);
-
-        $("#weeklyGoalSaveButton").addEventListener("click", () => {
-          const input = $("#weeklyGoalInput");
-          const value = Number(input.value);
-
-          if (!value || value <= 0) {
-            $("#weeklyGoalMessage").textContent = "1以上の目標時間を入力してください。";
-            return;
-          }
-
-          setWeeklyGoalHours(value);
-          renderDashboard();
-        });
-      }
-
-      document.addEventListener("DOMContentLoaded", () => {
-        setupEvents();
-        renderTimerDisplay();
-        renderDashboard();
-
-        const startTime = Number(localStorage.getItem(levelKey("startTime"))) || 0;
-
-        if (startTime) {
-          timerInterval = setInterval(renderTimerDisplay, 1000);
-          $("#timerStatusText").textContent = "計測中です。停止すると記録に反映されます。";
-        }
+    }
+
+    function saveRecordLogs(logs) {
+      localStorage.setItem(getRecordLogKey(), JSON.stringify(logs));
+    }
+
+    function addRecordLog(minutes, category) {
+      if (!minutes || minutes <= 0) return;
+
+      const logs = getRecordLogs();
+
+      logs.push({
+        date: recordTodayISO(),
+        minutes,
+        category: category || "その他",
+        level: getLevel(),
+        createdAt: new Date().toISOString()
       });
-    })();
+
+      saveRecordLogs(logs);
+    }
+
+    function getRecordDateRange(days) {
+      const today = new Date();
+      const result = [];
+
+      for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        result.push(recordToISO(date));
+      }
+
+      return result;
+    }
+
+    function getRecordMinutesByDate(logs, date) {
+      return logs
+        .filter(log => log.date === date)
+        .reduce((sum, log) => sum + Number(log.minutes || 0), 0);
+    }
+
+    function getRecordMonthMinutes(logs) {
+      const now = new Date();
+
+      return logs.reduce((sum, log) => {
+        const date = new Date(log.date);
+
+        if (
+          date.getFullYear() === now.getFullYear() &&
+          date.getMonth() === now.getMonth()
+        ) {
+          return sum + Number(log.minutes || 0);
+        }
+
+        return sum;
+      }, 0);
+    }
+
+    function renderRecordBars() {
+      const wrap = document.getElementById("recordBars");
+      if (!wrap) return;
+
+      const logs = getRecordLogs();
+      const dates = getRecordDateRange(14);
+      const today = recordTodayISO();
+
+      const values = dates.map(date => {
+        let minutes = getRecordMinutesByDate(logs, date);
+
+        if (date === today) {
+          minutes = Math.max(minutes, getData("todayStudyTime"));
+        }
+
+        return minutes;
+      });
+
+      const max = Math.max(120, ...values);
+
+      wrap.innerHTML = dates.map((date, index) => {
+        const minutes = values[index];
+        const height = minutes > 0
+          ? Math.max(7, Math.round((minutes / max) * 100))
+          : 4;
+
+        const d = new Date(date);
+        const label = `${d.getMonth() + 1}/${d.getDate()}`;
+
+        const classes = [
+          "record-bar",
+          minutes <= 0 ? "empty" : "",
+          date === today ? "today" : ""
+        ].join(" ");
+
+        return `
+          <div class="record-bar-item">
+            <div
+              class="${classes}"
+              style="height:${height}%;"
+              title="${label}：${recordFormatMinutes(minutes)}"
+            ></div>
+            <div class="record-bar-date">${label}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderRecordDistribution() {
+      const donut = document.getElementById("recordDonut");
+      const list = document.getElementById("recordDistributionList");
+      const totalLabel = document.getElementById("recordDonutTotal");
+
+      if (!donut || !list || !totalLabel) return;
+
+      const logs = getRecordLogs();
+      const total = getData("studyTime");
+
+      const categories = {};
+
+      logs.forEach(log => {
+        const name = log.category || "その他";
+        categories[name] = (categories[name] || 0) + Number(log.minutes || 0);
+      });
+
+      if (Object.keys(categories).length === 0 && total > 0) {
+        categories["学習時間"] = total;
+      }
+
+      const entries = Object.entries(categories)
+        .filter(([, minutes]) => minutes > 0)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      const realTotal = entries.reduce((sum, [, minutes]) => sum + minutes, 0);
+
+      totalLabel.textContent = recordFormatMinutes(total);
+
+      if (realTotal <= 0) {
+        donut.style.background = "conic-gradient(#e2e8f0 0deg 360deg)";
+        list.innerHTML = `
+          <div class="record-empty-text">
+            まだ分野別の記録がありません。<br>
+            タイマーで学習を記録すると表示されます。
+          </div>
+        `;
+        return;
+      }
+
+      const colors = ["#2563eb", "#38bdf8", "#f59e0b", "#22c55e", "#a855f7"];
+
+      let current = 0;
+
+      const gradient = entries.map(([, minutes], index) => {
+        const start = current;
+        const deg = (minutes / realTotal) * 360;
+        current += deg;
+        return `${colors[index]} ${start}deg ${current}deg`;
+      }).join(", ");
+
+      donut.style.background = `conic-gradient(${gradient})`;
+
+      list.innerHTML = entries.map(([name, minutes], index) => {
+        const percent = Math.round((minutes / realTotal) * 100);
+
+        return `
+          <div class="record-distribution-item">
+            <span class="record-distribution-dot" style="background:${colors[index]}"></span>
+            <div class="record-distribution-name">
+              <strong>${name}</strong>
+              <span>${recordFormatMinutes(minutes)}</span>
+            </div>
+            <div class="record-distribution-percent">${percent}%</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderRecordSummary() {
+      checkDateReset();
+      checkWeekReset();
+      syncLevelButtons();
+
+      const today = getData("todayStudyTime");
+      const weekly = getData("weeklyStudyTime");
+      const total = getData("studyTime");
+      const weeklyGoalHours = getWeeklyGoal();
+      const weeklyGoalMinutes = weeklyGoalHours * 60;
+
+      const todayGoal = 120;
+      const todayPercent = Math.min((today / todayGoal) * 100, 100);
+      const weeklyPercent = weeklyGoalMinutes > 0
+        ? Math.min((weekly / weeklyGoalMinutes) * 100, 100)
+        : 0;
+
+      const logs = getRecordLogs();
+      const monthMinutes = Math.max(getRecordMonthMinutes(logs), today);
+      const monthGoalMinutes = 40 * 60;
+      const monthPercent = Math.min((monthMinutes / monthGoalMinutes) * 100, 100);
+
+      const todayGoalText = document.getElementById("todayGoalText");
+      const todayGoalFill = document.getElementById("todayGoalFill");
+      const weeklyProgressText = document.getElementById("weeklyProgressText");
+      const progressFill = document.getElementById("progressFill");
+      const totalTime = document.getElementById("totalTime");
+      const recordTodayTime = document.getElementById("recordTodayTime");
+      const recordWeeklyTime = document.getElementById("recordWeeklyTime");
+      const monthStudyTime = document.getElementById("monthStudyTime");
+      const monthDetailTime = document.getElementById("monthDetailTime");
+      const monthDetailPercent = document.getElementById("monthDetailPercent");
+      const weeklyGoalDisplay = document.getElementById("weeklyGoalDisplay");
+      const weeklyGoalInput = document.getElementById("weeklyGoalInput");
+      const todayMessage = document.getElementById("todayMessage");
+
+      if (todayGoalText) todayGoalText.textContent = `${today} / ${todayGoal}分`;
+      if (todayGoalFill) todayGoalFill.style.width = `${todayPercent}%`;
+
+      if (weeklyProgressText) {
+        weeklyProgressText.textContent =
+          `${recordFormatMinutes(weekly)} / ${weeklyGoalHours}時間（${Math.floor(weeklyPercent)}%）`;
+      }
+
+      if (progressFill) progressFill.style.width = `${weeklyPercent}%`;
+      if (totalTime) totalTime.textContent = recordFormatMinutes(total);
+      if (recordTodayTime) recordTodayTime.textContent = recordFormatMinutes(today);
+      if (recordWeeklyTime) recordWeeklyTime.textContent = recordFormatMinutes(weekly);
+      if (monthStudyTime) monthStudyTime.textContent = recordFormatMinutes(monthMinutes);
+      if (monthDetailTime) monthDetailTime.textContent = recordFormatMinutes(monthMinutes);
+      if (monthDetailPercent) monthDetailPercent.textContent = `${Math.floor(monthPercent)}%`;
+
+      if (weeklyGoalDisplay) {
+        weeklyGoalDisplay.textContent = `今週の目標: ${weeklyGoalHours}時間`;
+      }
+
+      if (weeklyGoalInput) {
+        weeklyGoalInput.value = weeklyGoalHours;
+      }
+
+      if (todayMessage) {
+        todayMessage.textContent =
+          today > 0
+            ? `今日はすでに${recordFormatMinutes(today)}学習しています。`
+            : "今日の学習を記録すると、ここに反映されます。";
+      }
+
+      updateCountdown();
+      updateStreak();
+
+      renderRecordBars();
+      renderRecordDistribution();
+    }
+
+    function updateTimerDisplay() {
+      const timerEl = document.getElementById("timer");
+      if (!timerEl) return;
+
+      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+
+      if (!startTime) {
+        timerEl.textContent = "00:00:00";
+        return;
+      }
+
+      const seconds = Math.floor((Date.now() - startTime) / 1000);
+      timerEl.textContent = recordFormatTimer(seconds);
+    }
+
+    function startTimer() {
+      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+
+      if (startTime) return;
+
+      localStorage.setItem(getLevelKey("startTime"), Date.now());
+
+      const status = document.getElementById("timerStatusText");
+      if (status) status.textContent = "計測中です。停止すると学習時間に反映されます。";
+
+      updateTimerDisplay();
+    }
+
+    function stopTimer() {
+      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+      const status = document.getElementById("timerStatusText");
+
+      if (!startTime) {
+        if (status) status.textContent = "まだタイマーが開始されていません。";
+        return;
+      }
+
+      const seconds = Math.floor((Date.now() - startTime) / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const categorySelect = document.getElementById("studyCategorySelect");
+      const category = categorySelect ? categorySelect.value : "その他";
+
+      localStorage.removeItem(getLevelKey("startTime"));
+      setData("elapsedTime", 0);
+
+      if (minutes <= 0) {
+        if (status) {
+          status.textContent = "1分未満のため、学習時間には追加されませんでした。";
+        }
+
+        updateTimerDisplay();
+        return;
+      }
+
+      setData("studyTime", getData("studyTime") + minutes);
+      setData("todayStudyTime", getData("todayStudyTime") + minutes);
+      setData("weeklyStudyTime", getData("weeklyStudyTime") + minutes);
+
+      addRecordLog(minutes, category);
+
+      updateStreak();
+      updateHome();
+
+      if (status) {
+        status.textContent = `${category}を${recordFormatMinutes(minutes)}記録しました。`;
+      }
+
+      updateTimerDisplay();
+      renderRecordSummary();
+    }
+
+    function resetTimer() {
+      localStorage.removeItem(getLevelKey("startTime"));
+      setData("elapsedTime", 0);
+
+      const status = document.getElementById("timerStatusText");
+      if (status) status.textContent = "タイマーをリセットしました。";
+
+      updateTimerDisplay();
+    }
+
+    function switchRecordLevel(level) {
+      setLevel(level);
+      updateTimerDisplay();
+      renderRecordSummary();
+    }
+
+    function saveWeeklyGoalAndRender() {
+      saveWeeklyGoal();
+      renderRecordSummary();
+    }
+
+    function saveExamDateAndRender() {
+      saveExamDate();
+      renderRecordSummary();
+    }
+
+    function toggleMonthDetail() {
+      const panel = document.getElementById("monthDetailPanel");
+      if (!panel) return;
+
+      panel.classList.toggle("show");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderRecordSummary();
+      updateTimerDisplay();
+
+      if (!window.__recordTimerInterval) {
+        window.__recordTimerInterval = setInterval(() => {
+          updateTimerDisplay();
+          renderRecordSummary();
+        }, 1000);
+      }
+    });
   </script>
 
 </body>
