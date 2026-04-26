@@ -1,75 +1,79 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>簿記マスターズ</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@600;700;900&family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="welcome.css">
 </head>
 
 <body>
-
   <main class="welcome-page">
 
-    <section class="hero-section">
-      <div class="hero-bg"></div>
-      <div class="hero-light hero-light-one"></div>
-      <div class="hero-light hero-light-two"></div>
-      <div class="hero-road"></div>
+    <section class="hero">
+      <div class="bg-orb orb-1"></div>
+      <div class="bg-orb orb-2"></div>
+      <div class="bg-line line-1"></div>
+      <div class="bg-line line-2"></div>
+      <div class="bg-line line-3"></div>
 
       <div class="hero-inner">
 
-        <div class="hero-left">
-          <div class="brand-pill">
-            <div class="brand-mark">
-              <span></span>
-            </div>
-            <div>
-              <p class="brand-name">簿記マスターズ</p>
-              <p class="brand-sub">BOKI MASTERS</p>
-            </div>
-          </div>
+        <div class="hero-copy">
+          <h1>
+            続けられる人が、<br>
+            <span>合格に一番近い。</span>
+          </h1>
 
-          <div class="hero-copy">
-            <p class="hero-label">STUDY MANAGEMENT APP</p>
-            <h1>
-              続けられる人が、<br>
-              <span>合格に一番近い。</span>
-            </h1>
-            <p class="hero-text">
-              学習記録、問題演習、復習、やること管理。<br>
-              簿記学習を止めないためのアプリ。
-            </p>
-          </div>
+          <div class="gold-line"></div>
 
-          <div class="hero-tags">
-            <span>学習記録</span>
-            <span>問題演習</span>
-            <span>復習</span>
-            <span>タスク管理</span>
+          <p class="lead">
+            学習記録、問題演習、復習、やること管理。<br>
+            簿記学習を止めないためのアプリ。
+          </p>
+
+          <div class="mini-features">
+            <div class="mini-feature">
+              <div class="mini-icon bar-icon"></div>
+              <span>学習記録</span>
+            </div>
+            <div class="mini-feature">
+              <div class="mini-icon pencil-icon"></div>
+              <span>問題演習</span>
+            </div>
+            <div class="mini-feature">
+              <div class="mini-icon refresh-icon"></div>
+              <span>復習</span>
+            </div>
+            <div class="mini-feature">
+              <div class="mini-icon list-icon"></div>
+              <span>管理</span>
+            </div>
           </div>
         </div>
 
-        <div class="hero-right">
+        <div class="auth-wrap">
           <div class="auth-card">
-            <div class="auth-icon">
-              <span></span>
+            <div class="auth-logo">
+              <img src="logo.png" alt="簿記マスターズ">
             </div>
 
             <h2>学習を始める</h2>
+
             <p>
-              アカウントを作成すると、学習データを保存して続きから使えます。
+              アカウントを作成すると、<br>
+              学習データを保存して続きから使えます。
             </p>
 
             <div class="auth-actions">
-              <a href="signup.html" class="auth-btn primary">新規登録</a>
-              <a href="login.html" class="auth-btn secondary">ログイン</a>
-              <a href="index.html" class="guest-link">ゲストで試してみる</a>
+              <a href="signup.html" class="btn primary">新規登録</a>
+              <a href="login.html" class="btn secondary">ログイン</a>
+              <a href="index.html" class="guest">ゲストで試してみる</a>
             </div>
           </div>
         </div>
@@ -77,47 +81,53 @@
       </div>
     </section>
 
-    <section class="feature-section">
-      <div class="feature-inner">
-
-        <div class="section-head">
-          <p>ABOUT</p>
-          <h2>迷わず学び、確実に積み上げる。</h2>
-          <span>
-            簿記マスターズは、毎日の勉強を見える化し、問題演習と復習まで一つにまとめた学習アプリです。
-          </span>
+    <section class="features">
+      <div class="features-inner">
+        <div class="features-heading">
+          <h2>簿記学習に、必要なすべてを。</h2>
+          <div class="gold-line center"></div>
         </div>
 
         <div class="feature-grid">
-          <div class="feature-card">
-            <div class="feature-number">01</div>
+          <article class="feature-card">
+            <div class="feature-icon bar-icon large"></div>
             <h3>学習記録を見える化</h3>
-            <p>今日・今週・累計の勉強時間を確認。努力が数字で残るから続けやすい。</p>
-          </div>
+            <p>
+              今日・今週・累計の勉強時間を自動で記録。<br>
+              努力がグラフで見えるから、続けやすい。
+            </p>
+          </article>
 
-          <div class="feature-card">
-            <div class="feature-number">02</div>
+          <article class="feature-card">
+            <div class="feature-icon pencil-icon large"></div>
             <h3>分野別に問題演習</h3>
-            <p>基礎、商品売買、決算など、分野ごとに苦手をつぶせる。</p>
-          </div>
+            <p>
+              基礎から決算まで、分野ごとに問題へ挑戦。<br>
+              苦手を見つけて、確実に実力をつける。
+            </p>
+          </article>
 
-          <div class="feature-card">
-            <div class="feature-number">03</div>
+          <article class="feature-card">
+            <div class="feature-icon refresh-icon large"></div>
             <h3>間違いを復習</h3>
-            <p>間違えた問題を記録して、あとから集中的に復習できる。</p>
-          </div>
+            <p>
+              間違えた問題を自動で記録。<br>
+              弱点を集中して復習できるから、忘れない。
+            </p>
+          </article>
 
-          <div class="feature-card">
-            <div class="feature-number">04</div>
+          <article class="feature-card">
+            <div class="feature-icon list-icon large"></div>
             <h3>やること管理</h3>
-            <p>その日にやる勉強を整理して、迷わず始められる状態を作る。</p>
-          </div>
+            <p>
+              その日にやる勉強を整理して、迷わずスタート。<br>
+              計画通りに進めて、習慣化をサポート。
+            </p>
+          </article>
         </div>
-
       </div>
     </section>
 
   </main>
-
 </body>
 </html>
