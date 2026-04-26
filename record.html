@@ -14,7 +14,7 @@
   <style>
     /* =====================
        Record Page Only
-       既存デザインに統一するための記録ページ専用CSS
+       ホーム・練習・やることに統一した記録ページ専用CSS
     ===================== */
 
     .record-main-card {
@@ -598,6 +598,8 @@
   <script src="app.js"></script>
 
   <script>
+    let recordInterval = null;
+
     function recordPad(number) {
       return String(number).padStart(2, "0");
     }
@@ -719,6 +721,7 @@
 
       wrap.innerHTML = dates.map((date, index) => {
         const minutes = values[index];
+
         const height = minutes > 0
           ? Math.max(7, Math.round((minutes / max) * 100))
           : 4;
@@ -828,6 +831,7 @@
 
       const todayGoal = 120;
       const todayPercent = Math.min((today / todayGoal) * 100, 100);
+
       const weeklyPercent = weeklyGoalMinutes > 0
         ? Math.min((weekly / weeklyGoalMinutes) * 100, 100)
         : 0;
@@ -895,12 +899,14 @@
 
       const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
 
-      if (!startTime) {
-        timerEl.textContent = "00:00:00";
-        return;
+      let seconds = 0;
+
+      if (startTime) {
+        seconds = Math.floor((Date.now() - startTime) / 1000);
+      } else {
+        seconds = getData("elapsedTime");
       }
 
-      const seconds = Math.floor((Date.now() - startTime) / 1000);
       timerEl.textContent = recordFormatTimer(seconds);
     }
 
@@ -909,10 +915,18 @@
 
       if (startTime) return;
 
-      localStorage.setItem(getLevelKey("startTime"), Date.now());
+      const savedSeconds = getData("elapsedTime");
+
+      localStorage.setItem(
+        getLevelKey("startTime"),
+        Date.now() - savedSeconds * 1000
+      );
 
       const status = document.getElementById("timerStatusText");
-      if (status) status.textContent = "計測中です。停止すると学習時間に反映されます。";
+
+      if (status) {
+        status.textContent = "計測中です。停止するとその時間で止まります。";
+      }
 
       updateTimerDisplay();
     }
@@ -922,38 +936,46 @@
       const status = document.getElementById("timerStatusText");
 
       if (!startTime) {
-        if (status) status.textContent = "まだタイマーが開始されていません。";
-        return;
-      }
-
-      const seconds = Math.floor((Date.now() - startTime) / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const categorySelect = document.getElementById("studyCategorySelect");
-      const category = categorySelect ? categorySelect.value : "その他";
-
-      localStorage.removeItem(getLevelKey("startTime"));
-      setData("elapsedTime", 0);
-
-      if (minutes <= 0) {
         if (status) {
-          status.textContent = "1分未満のため、学習時間には追加されませんでした。";
+          status.textContent = "タイマーはすでに停止しています。";
         }
 
         updateTimerDisplay();
         return;
       }
 
-      setData("studyTime", getData("studyTime") + minutes);
-      setData("todayStudyTime", getData("todayStudyTime") + minutes);
-      setData("weeklyStudyTime", getData("weeklyStudyTime") + minutes);
+      const seconds = Math.floor((Date.now() - startTime) / 1000);
+      const totalMinutes = Math.floor(seconds / 60);
 
-      addRecordLog(minutes, category);
+      const countedMinutes = getData("timerCountedMinutes");
+      const addMinutes = Math.max(0, totalMinutes - countedMinutes);
 
-      updateStreak();
-      updateHome();
+      const categorySelect = document.getElementById("studyCategorySelect");
+      const category = categorySelect ? categorySelect.value : "その他";
 
-      if (status) {
-        status.textContent = `${category}を${recordFormatMinutes(minutes)}記録しました。`;
+      localStorage.removeItem(getLevelKey("startTime"));
+      setData("elapsedTime", seconds);
+
+      if (addMinutes > 0) {
+        setData("studyTime", getData("studyTime") + addMinutes);
+        setData("todayStudyTime", getData("todayStudyTime") + addMinutes);
+        setData("weeklyStudyTime", getData("weeklyStudyTime") + addMinutes);
+        setData("timerCountedMinutes", totalMinutes);
+
+        addRecordLog(addMinutes, category);
+
+        updateStreak();
+        updateHome();
+
+        if (status) {
+          status.textContent =
+            `${category}を${recordFormatMinutes(addMinutes)}記録しました。タイマーは停止中です。`;
+        }
+      } else {
+        if (status) {
+          status.textContent =
+            "停止しました。1分未満のため、学習時間にはまだ追加されていません。";
+        }
       }
 
       updateTimerDisplay();
@@ -963,11 +985,16 @@
     function resetTimer() {
       localStorage.removeItem(getLevelKey("startTime"));
       setData("elapsedTime", 0);
+      setData("timerCountedMinutes", 0);
 
       const status = document.getElementById("timerStatusText");
-      if (status) status.textContent = "タイマーをリセットしました。";
+
+      if (status) {
+        status.textContent = "タイマーをリセットしました。";
+      }
 
       updateTimerDisplay();
+      renderRecordSummary();
     }
 
     function switchRecordLevel(level) {
@@ -977,7 +1004,30 @@
     }
 
     function saveWeeklyGoalAndRender() {
-      saveWeeklyGoal();
+      const input = document.getElementById("weeklyGoalInput");
+      const display = document.getElementById("weeklyGoalDisplay");
+
+      if (!input) return;
+
+      const value = Number(input.value);
+
+      if (!value || value <= 0) {
+        if (display) {
+          display.textContent = "1以上の目標時間を入力してください";
+        }
+        return;
+      }
+
+      localStorage.setItem(getLevelKey("weeklyGoal"), value);
+
+      if (typeof updateWeeklyGoalDisplay === "function") {
+        updateWeeklyGoalDisplay();
+      }
+
+      if (typeof updateHome === "function") {
+        updateHome();
+      }
+
       renderRecordSummary();
     }
 
@@ -997,12 +1047,19 @@
       renderRecordSummary();
       updateTimerDisplay();
 
-      if (!window.__recordTimerInterval) {
-        window.__recordTimerInterval = setInterval(() => {
-          updateTimerDisplay();
-          renderRecordSummary();
-        }, 1000);
+      if (recordInterval) {
+        clearInterval(recordInterval);
       }
+
+      recordInterval = setInterval(() => {
+        updateTimerDisplay();
+
+        const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+
+        if (startTime) {
+          renderRecordSummary();
+        }
+      }, 1000);
     });
   </script>
 
