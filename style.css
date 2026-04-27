@@ -2458,3 +2458,111 @@ button:active {
     height: 23px;
   }
 }
+
+/* =========================================================
+   Bottom Navigation Fix
+   ホーム・練習・記録・やること の位置ズレ修正
+========================================================= */
+
+.nav {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 40px));
+  height: 78px;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 0;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 24px 70px rgba(20, 70, 150, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  z-index: 999;
+  box-sizing: border-box;
+}
+
+.nav a {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border-radius: 22px;
+  display: grid;
+  grid-template-rows: 28px 18px;
+  place-items: center;
+  align-content: center;
+  justify-content: center;
+  row-gap: 5px;
+  color: #8a9ab2;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1;
+  box-sizing: border-box;
+}
+
+.nav a svg {
+  width: 25px;
+  height: 25px;
+  display: block;
+  color: currentColor;
+  fill: currentColor;
+  stroke: currentColor;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a span {
+  display: block;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+}
+
+.nav a.active {
+  color: #1767f2;
+  background: linear-gradient(180deg, #eef5ff, #e4efff);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.nav a:hover {
+  color: #1767f2;
+}
+
+/* 下バーで本文が隠れないようにする */
+body {
+  padding-bottom: 130px;
+}
+
+@media (max-width: 720px) {
+  .nav {
+    bottom: 18px;
+    width: calc(100% - 26px);
+    height: 74px;
+    border-radius: 24px;
+    padding: 7px;
+  }
+
+  .nav a {
+    border-radius: 19px;
+    grid-template-rows: 26px 17px;
+    row-gap: 4px;
+    font-size: 12px;
+  }
+
+  .nav a svg {
+    width: 23px;
+    height: 23px;
+  }
+}
