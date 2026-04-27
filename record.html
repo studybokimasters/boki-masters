@@ -456,7 +456,7 @@
         </div>
 
         <div class="record-goal-form">
-          <input type="number" id="weeklyGoalInput" min="1" placeholder="目標時間">
+          <input type="number" id="weeklyGoalInput" min="1" step="0.5" placeholder="目標時間">
           <button onclick="saveWeeklyGoalAndRender()">保存</button>
         </div>
 
@@ -622,6 +622,16 @@
       return `${hours}時間${mins}分`;
     }
 
+    function recordFormatGoalHours(hours) {
+      const value = Number(hours);
+
+      if (Number.isInteger(value)) {
+        return `${value}時間`;
+      }
+
+      return `${value}時間`;
+    }
+
     function recordFormatTimer(seconds) {
       const sec = Math.max(0, Math.floor(Number(seconds) || 0));
       const h = recordPad(Math.floor(sec / 3600));
@@ -631,8 +641,56 @@
       return `${h}:${m}:${s}`;
     }
 
+    function recordCurrentLevel() {
+      if (typeof getLevel === "function") {
+        return getLevel();
+      }
+
+      return localStorage.getItem("level") || "3級";
+    }
+
+    function recordLevelKey(key) {
+      if (typeof getLevelKey === "function") {
+        return getLevelKey(key);
+      }
+
+      return `${recordCurrentLevel()}_${key}`;
+    }
+
+    function recordGetData(key) {
+      if (typeof getData === "function") {
+        return Number(getData(key)) || 0;
+      }
+
+      return Number(localStorage.getItem(recordLevelKey(key))) || 0;
+    }
+
+    function recordSetData(key, value) {
+      if (typeof setData === "function") {
+        setData(key, value);
+        return;
+      }
+
+      localStorage.setItem(recordLevelKey(key), value);
+    }
+
+    function getRecordWeeklyGoal() {
+      const raw = localStorage.getItem(recordLevelKey("weeklyGoal"));
+      const value = Number(raw);
+
+      if (!Number.isNaN(value) && value > 0) {
+        return value;
+      }
+
+      return 10;
+    }
+
+    function setRecordWeeklyGoal(value) {
+      localStorage.setItem(recordLevelKey("weeklyGoal"), value);
+    }
+
     function getRecordLogKey() {
-      return getLevelKey("studyLogs");
+      return recordLevelKey("studyLogs");
     }
 
     function getRecordLogs() {
@@ -656,7 +714,7 @@
         date: recordTodayISO(),
         minutes,
         category: category || "その他",
-        level: getLevel(),
+        level: recordCurrentLevel(),
         createdAt: new Date().toISOString()
       });
 
@@ -711,7 +769,7 @@
         let minutes = getRecordMinutesByDate(logs, date);
 
         if (date === today) {
-          minutes = Math.max(minutes, getData("todayStudyTime"));
+          minutes = Math.max(minutes, recordGetData("todayStudyTime"));
         }
 
         return minutes;
@@ -756,7 +814,7 @@
       if (!donut || !list || !totalLabel) return;
 
       const logs = getRecordLogs();
-      const total = getData("studyTime");
+      const total = recordGetData("studyTime");
 
       const categories = {};
 
@@ -818,15 +876,61 @@
       }).join("");
     }
 
-    function renderRecordSummary() {
-      checkDateReset();
-      checkWeekReset();
-      syncLevelButtons();
+    function renderRecordCountdown() {
+      const countdown = document.getElementById("countdown");
+      const examDateInput = document.getElementById("examDate");
 
-      const today = getData("todayStudyTime");
-      const weekly = getData("weeklyStudyTime");
-      const total = getData("studyTime");
-      const weeklyGoalHours = getWeeklyGoal();
+      if (!countdown) return;
+
+      const saved = localStorage.getItem("examDate");
+
+      if (examDateInput && saved) {
+        examDateInput.value = saved;
+      }
+
+      if (!saved) {
+        countdown.textContent = "未設定";
+        return;
+      }
+
+      const [year, month, day] = saved.split("-");
+      const examDate = new Date(year, month - 1, day);
+      const today = new Date();
+
+      today.setHours(0, 0, 0, 0);
+      examDate.setHours(0, 0, 0, 0);
+
+      const diff = Math.ceil((examDate - today) / 86400000);
+
+      countdown.textContent = diff < 0 ? "0日" : `あと${diff}日`;
+    }
+
+    function renderRecordStreak() {
+      const streakEl = document.getElementById("streak");
+      if (!streakEl) return;
+
+      const streak = recordGetData("streak");
+      streakEl.textContent = `${streak}日連続`;
+    }
+
+    function renderRecordSummary() {
+      if (typeof checkDateReset === "function") {
+        checkDateReset();
+      }
+
+      if (typeof checkWeekReset === "function") {
+        checkWeekReset();
+      }
+
+      if (typeof syncLevelButtons === "function") {
+        syncLevelButtons();
+      }
+
+      const today = recordGetData("todayStudyTime");
+      const weekly = recordGetData("weeklyStudyTime");
+      const total = recordGetData("studyTime");
+
+      const weeklyGoalHours = getRecordWeeklyGoal();
       const weeklyGoalMinutes = weeklyGoalHours * 60;
 
       const todayGoal = 120;
@@ -860,7 +964,7 @@
 
       if (weeklyProgressText) {
         weeklyProgressText.textContent =
-          `${recordFormatMinutes(weekly)} / ${weeklyGoalHours}時間（${Math.floor(weeklyPercent)}%）`;
+          `${recordFormatMinutes(weekly)} / ${recordFormatGoalHours(weeklyGoalHours)}（${Math.floor(weeklyPercent)}%）`;
       }
 
       if (progressFill) progressFill.style.width = `${weeklyPercent}%`;
@@ -872,10 +976,10 @@
       if (monthDetailPercent) monthDetailPercent.textContent = `${Math.floor(monthPercent)}%`;
 
       if (weeklyGoalDisplay) {
-        weeklyGoalDisplay.textContent = `今週の目標: ${weeklyGoalHours}時間`;
+        weeklyGoalDisplay.textContent = `今週の目標: ${recordFormatGoalHours(weeklyGoalHours)}`;
       }
 
-      if (weeklyGoalInput) {
+      if (weeklyGoalInput && document.activeElement !== weeklyGoalInput) {
         weeklyGoalInput.value = weeklyGoalHours;
       }
 
@@ -886,9 +990,8 @@
             : "今日の学習を記録すると、ここに反映されます。";
       }
 
-      updateCountdown();
-      updateStreak();
-
+      renderRecordCountdown();
+      renderRecordStreak();
       renderRecordBars();
       renderRecordDistribution();
     }
@@ -897,28 +1000,28 @@
       const timerEl = document.getElementById("timer");
       if (!timerEl) return;
 
-      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+      const startTime = Number(localStorage.getItem(recordLevelKey("startTime"))) || 0;
 
       let seconds = 0;
 
       if (startTime) {
         seconds = Math.floor((Date.now() - startTime) / 1000);
       } else {
-        seconds = getData("elapsedTime");
+        seconds = recordGetData("elapsedTime");
       }
 
       timerEl.textContent = recordFormatTimer(seconds);
     }
 
     function startTimer() {
-      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+      const startTime = Number(localStorage.getItem(recordLevelKey("startTime"))) || 0;
 
       if (startTime) return;
 
-      const savedSeconds = getData("elapsedTime");
+      const savedSeconds = recordGetData("elapsedTime");
 
       localStorage.setItem(
-        getLevelKey("startTime"),
+        recordLevelKey("startTime"),
         Date.now() - savedSeconds * 1000
       );
 
@@ -932,7 +1035,7 @@
     }
 
     function stopTimer() {
-      const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+      const startTime = Number(localStorage.getItem(recordLevelKey("startTime"))) || 0;
       const status = document.getElementById("timerStatusText");
 
       if (!startTime) {
@@ -947,25 +1050,30 @@
       const seconds = Math.floor((Date.now() - startTime) / 1000);
       const totalMinutes = Math.floor(seconds / 60);
 
-      const countedMinutes = getData("timerCountedMinutes");
+      const countedMinutes = recordGetData("timerCountedMinutes");
       const addMinutes = Math.max(0, totalMinutes - countedMinutes);
 
       const categorySelect = document.getElementById("studyCategorySelect");
       const category = categorySelect ? categorySelect.value : "その他";
 
-      localStorage.removeItem(getLevelKey("startTime"));
-      setData("elapsedTime", seconds);
+      localStorage.removeItem(recordLevelKey("startTime"));
+      recordSetData("elapsedTime", seconds);
 
       if (addMinutes > 0) {
-        setData("studyTime", getData("studyTime") + addMinutes);
-        setData("todayStudyTime", getData("todayStudyTime") + addMinutes);
-        setData("weeklyStudyTime", getData("weeklyStudyTime") + addMinutes);
-        setData("timerCountedMinutes", totalMinutes);
+        recordSetData("studyTime", recordGetData("studyTime") + addMinutes);
+        recordSetData("todayStudyTime", recordGetData("todayStudyTime") + addMinutes);
+        recordSetData("weeklyStudyTime", recordGetData("weeklyStudyTime") + addMinutes);
+        recordSetData("timerCountedMinutes", totalMinutes);
 
         addRecordLog(addMinutes, category);
 
-        updateStreak();
-        updateHome();
+        if (typeof updateStreak === "function") {
+          updateStreak();
+        }
+
+        if (typeof updateHome === "function") {
+          updateHome();
+        }
 
         if (status) {
           status.textContent =
@@ -983,9 +1091,9 @@
     }
 
     function resetTimer() {
-      localStorage.removeItem(getLevelKey("startTime"));
-      setData("elapsedTime", 0);
-      setData("timerCountedMinutes", 0);
+      localStorage.removeItem(recordLevelKey("startTime"));
+      recordSetData("elapsedTime", 0);
+      recordSetData("timerCountedMinutes", 0);
 
       const status = document.getElementById("timerStatusText");
 
@@ -998,7 +1106,12 @@
     }
 
     function switchRecordLevel(level) {
-      setLevel(level);
+      if (typeof setLevel === "function") {
+        setLevel(level);
+      } else {
+        localStorage.setItem("level", level);
+      }
+
       updateTimerDisplay();
       renderRecordSummary();
     }
@@ -1009,20 +1122,23 @@
 
       if (!input) return;
 
-      const value = Number(input.value);
+      const rawValue = input.value.trim();
+      const value = Number(rawValue);
 
-      if (!value || value <= 0) {
+      if (!rawValue || Number.isNaN(value) || value <= 0) {
         if (display) {
           display.textContent = "1以上の目標時間を入力してください";
         }
         return;
       }
 
-      localStorage.setItem(getLevelKey("weeklyGoal"), value);
+      setRecordWeeklyGoal(value);
 
-      if (typeof updateWeeklyGoalDisplay === "function") {
-        updateWeeklyGoalDisplay();
+      if (display) {
+        display.textContent = `今週の目標: ${recordFormatGoalHours(value)}`;
       }
+
+      input.value = value;
 
       if (typeof updateHome === "function") {
         updateHome();
@@ -1032,7 +1148,20 @@
     }
 
     function saveExamDateAndRender() {
-      saveExamDate();
+      const input = document.getElementById("examDate");
+
+      if (!input) return;
+
+      const value = input.value;
+
+      if (!value) return;
+
+      localStorage.setItem("examDate", value);
+
+      if (typeof updateHome === "function") {
+        updateHome();
+      }
+
       renderRecordSummary();
     }
 
@@ -1054,7 +1183,7 @@
       recordInterval = setInterval(() => {
         updateTimerDisplay();
 
-        const startTime = Number(localStorage.getItem(getLevelKey("startTime"))) || 0;
+        const startTime = Number(localStorage.getItem(recordLevelKey("startTime"))) || 0;
 
         if (startTime) {
           renderRecordSummary();
