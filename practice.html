@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>練習</title>
+
   <link rel="stylesheet" href="style.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -22,7 +24,6 @@
 
   <div class="container">
 
-    <!-- モード選択 -->
     <div class="mode-grid" id="modeSelect">
       <button class="mode-btn" onclick="startMode('category')">
         <div class="mode-title">分野別</div>
@@ -45,7 +46,6 @@
       </button>
     </div>
 
-    <!-- 分野選択 -->
     <div id="categorySelect" class="category-select" style="display:none;">
       <div class="section-head">
         <h3>分野を選択</h3>
@@ -59,13 +59,13 @@
       </div>
     </div>
 
-    <!-- 問題エリア -->
     <div id="quizArea" style="display:none;">
       <div class="quiz-topbar">
         <div>
           <div class="quiz-mode-label" id="quizModeLabel">分野別</div>
           <div class="quiz-category-label" id="quizCategoryLabel">基礎</div>
         </div>
+
         <div class="quiz-count" id="quizCount">1 / 10</div>
       </div>
 
@@ -88,7 +88,6 @@
       </div>
     </div>
 
-    <!-- 結果画面 -->
     <div id="resultScreen" class="result-screen" style="display:none;">
       <div class="result-hero-card">
         <div class="result-badge">RESULT</div>
@@ -104,6 +103,7 @@
             <div class="result-stat-label">正答数</div>
             <div class="result-stat-value" id="correctCountText">0 / 0</div>
           </div>
+
           <div class="result-stat">
             <div class="result-stat-label">分野</div>
             <div class="result-stat-value" id="resultCategoryText">基礎</div>
@@ -115,6 +115,7 @@
             <span>正答率</span>
             <span id="resultAccuracyText">0 / 0</span>
           </div>
+
           <div class="progress-bar large">
             <div id="resultProgressFill"></div>
           </div>
@@ -130,6 +131,7 @@
             <h3>回答の振り返り</h3>
             <p>自分の回答と正解、理由をまとめて確認できます</p>
           </div>
+
           <div id="reviewList" class="review-list"></div>
         </div>
       </div>
@@ -138,54 +140,103 @@
   </div>
 
   <div class="nav">
-  <a href="index.html" data-page="index.html" aria-label="ホーム">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M4.5 10.5L12 4.2L19.5 10.5V19.5H15V14.2H9V19.5H4.5V10.5Z"></path>
-    </svg>
-    <span>ホーム</span>
-  </a>
+    <a href="index.html" data-page="index.html" aria-label="ホーム">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M4.5 10.5L12 4.2L19.5 10.5V19.5H15V14.2H9V19.5H4.5V10.5Z"
+          style="fill: currentColor !important; stroke: none !important;"
+        ></path>
+      </svg>
+      <span>ホーム</span>
+    </a>
 
-  <a href="practice.html" data-page="practice.html" aria-label="練習">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M7 4.5H14.5L18 8V19.5H7V4.5Z"></path>
-      <path d="M14.5 4.5V8H18"></path>
-      <path d="M9.5 12.5H14.5"></path>
-      <path d="M9.5 16H13"></path>
-    </svg>
-    <span>練習</span>
-  </a>
+    <a href="practice.html" data-page="practice.html" aria-label="練習">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M7 4.5H14.5L18 8V19.5H7V4.5Z"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
+        ></path>
+        <path
+          d="M14.5 4.5V8H18"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
+        ></path>
+        <path
+          d="M9.5 12.5H14.5"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
+        ></path>
+        <path
+          d="M9.5 16H13"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
+        ></path>
+      </svg>
+      <span>練習</span>
+    </a>
 
-  <a href="record.html" data-page="record.html" aria-label="記録">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6.5 19V12"></path>
-      <path d="M12 19V6"></path>
-      <path d="M17.5 19V9.5"></path>
-    </svg>
-    <span>記録</span>
-  </a>
+    <a href="record.html" data-page="record.html" aria-label="記録">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect
+          x="5.5"
+          y="11"
+          width="3"
+          height="8"
+          rx="1.2"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
+        ></rect>
+        <rect
+          x="10.5"
+          y="5"
+          width="3"
+          height="14"
+          rx="1.2"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
+        ></rect>
+        <rect
+          x="15.5"
+          y="8"
+          width="3"
+          height="11"
+          rx="1.2"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
+        ></rect>
+      </svg>
+      <span>記録</span>
+    </a>
 
-  <a href="tasks.html" data-page="tasks.html" aria-label="やること">
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M6.5 7.5L8.2 9.2L11 6.2"></path>
-      <path d="M13 8H18"></path>
-      <path d="M6.5 14.5L8.2 16.2L11 13.2"></path>
-      <path d="M13 15H18"></path>
-    </svg>
-    <span>やること</span>
-  </a>
-</div>
+    <a href="tasks.html" data-page="tasks.html" aria-label="やること">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M6.5 7.8L8.2 9.5L11.2 6.2"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
+        ></path>
+        <path
+          d="M13 8H18.5"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
+        ></path>
+        <path
+          d="M6.5 15L8.2 16.7L11.2 13.4"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
+        ></path>
+        <path
+          d="M13 15.2H18.5"
+          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
+        ></path>
+      </svg>
+      <span>やること</span>
+    </a>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const currentPage = location.pathname.split("/").pop() || "index.html";
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentPage = location.pathname.split("/").pop() || "index.html";
 
-    document.querySelectorAll(".nav a").forEach((link) => {
-      link.classList.toggle("active", link.dataset.page === currentPage);
+      document.querySelectorAll(".nav a").forEach((link) => {
+        link.classList.toggle("active", link.dataset.page === currentPage);
+      });
     });
-  });
-</script>
+  </script>
 
   <script src="questions.js"></script>
   <script src="app.js"></script>
+
 </body>
 </html>
