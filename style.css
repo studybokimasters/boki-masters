@@ -1991,18 +1991,14 @@ button:active {
 /* アイコンの箱だけを横にずらす */
 /* プラスなら右、マイナスなら左 */
 
-.nav-link[data-page="index.html"] .nav-icon-box {
-  transform: translateX(0px) !important;
-}
+/* =====================
+   Nav Icon Position Reset
+   下バーアイコンの横ズレを一旦すべてリセット
+===================== */
 
-.nav-link[data-page="practice.html"] .nav-icon-box {
-  transform: translateX(-50px) !important;
-}
-
-.nav-link[data-page="record.html"] .nav-icon-box {
-  transform: translateX(0px) !important;
-}
-
+.nav-link[data-page="index.html"] .nav-icon-box,
+.nav-link[data-page="practice.html"] .nav-icon-box,
+.nav-link[data-page="record.html"] .nav-icon-box,
 .nav-link[data-page="tasks.html"] .nav-icon-box {
-  transform: translateX(-50px) !important;
+  transform: translateX(0px) !important;
 }
