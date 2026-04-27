@@ -46,100 +46,52 @@
   </div>
 
   <div class="nav">
-    <a href="index.html" data-page="index.html" aria-label="ホーム">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M4.5 10.5L12 4.2L19.5 10.5V19.5H15V14.2H9V19.5H4.5V10.5Z"
-          style="fill: currentColor !important; stroke: none !important;"
-        ></path>
-      </svg>
-      <span>ホーム</span>
-    </a>
+  <a href="index.html" class="nav-link" data-page="index.html" aria-label="ホーム">
+    <svg class="nav-icon nav-icon-home" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M4.5 10.5L12 4.2L19.5 10.5V19.5H15V14.2H9V19.5H4.5V10.5Z"></path>
+    </svg>
+    <span>ホーム</span>
+  </a>
 
-    <a href="practice.html" data-page="practice.html" aria-label="練習">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M7 4.5H14.5L18 8V19.5H7V4.5Z"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
-        ></path>
-        <path
-          d="M14.5 4.5V8H18"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
-        ></path>
-        <path
-          d="M9.5 12.5H14.5"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
-        ></path>
-        <path
-          d="M9.5 16H13"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
-        ></path>
-      </svg>
-      <span>練習</span>
-    </a>
+  <a href="practice.html" class="nav-link" data-page="practice.html" aria-label="練習">
+    <svg class="nav-icon nav-icon-practice" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7 4.5H14.5L18 8V19.5H7V4.5Z"></path>
+      <path d="M14.5 4.5V8H18"></path>
+      <path d="M9.5 12.5H14.5"></path>
+      <path d="M9.5 16H13"></path>
+    </svg>
+    <span>練習</span>
+  </a>
 
-    <a href="record.html" data-page="record.html" aria-label="記録">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect
-          x="5.5"
-          y="11"
-          width="3"
-          height="8"
-          rx="1.2"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
-        ></rect>
-        <rect
-          x="10.5"
-          y="5"
-          width="3"
-          height="14"
-          rx="1.2"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
-        ></rect>
-        <rect
-          x="15.5"
-          y="8"
-          width="3"
-          height="11"
-          rx="1.2"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important;"
-        ></rect>
-      </svg>
-      <span>記録</span>
-    </a>
+  <a href="record.html" class="nav-link" data-page="record.html" aria-label="記録">
+    <svg class="nav-icon nav-icon-record" viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="5.5" y="11" width="3" height="8" rx="1.2"></rect>
+      <rect x="10.5" y="5" width="3" height="14" rx="1.2"></rect>
+      <rect x="15.5" y="8" width="3" height="11" rx="1.2"></rect>
+    </svg>
+    <span>記録</span>
+  </a>
 
-    <a href="tasks.html" data-page="tasks.html" aria-label="やること">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path
-          d="M6.5 7.8L8.2 9.5L11.2 6.2"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
-        ></path>
-        <path
-          d="M13 8H18.5"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
-        ></path>
-        <path
-          d="M6.5 15L8.2 16.7L11.2 13.4"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important; stroke-linejoin: round !important;"
-        ></path>
-        <path
-          d="M13 15.2H18.5"
-          style="fill: none !important; stroke: currentColor !important; stroke-width: 2 !important; stroke-linecap: round !important;"
-        ></path>
-      </svg>
-      <span>やること</span>
-    </a>
-  </div>
+  <a href="tasks.html" class="nav-link" data-page="tasks.html" aria-label="やること">
+    <svg class="nav-icon nav-icon-tasks" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6.5 7.8L8.2 9.5L11.2 6.2"></path>
+      <path d="M13 8H18.5"></path>
+      <path d="M6.5 15L8.2 16.7L11.2 13.4"></path>
+      <path d="M13 15.2H18.5"></path>
+    </svg>
+    <span>やること</span>
+  </a>
+</div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const currentPage = location.pathname.split("/").pop() || "index.html";
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const currentPage = location.pathname.split("/").pop() || "index.html";
 
-      document.querySelectorAll(".nav a").forEach((link) => {
-        link.classList.toggle("active", link.dataset.page === currentPage);
-      });
+    document.querySelectorAll(".nav-link").forEach((link) => {
+      link.classList.toggle("active", link.dataset.page === currentPage);
     });
-  </script>
+  });
+</script>
 
   <script src="app.js"></script>
 
