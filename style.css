@@ -1996,7 +1996,7 @@ button:active {
 }
 
 .nav-link[data-page="practice.html"] .nav-icon-box {
-  transform: translateX(-1px) !important;
+  transform: translateX(-3px) !important;
 }
 
 .nav-link[data-page="record.html"] .nav-icon-box {
@@ -2004,5 +2004,5 @@ button:active {
 }
 
 .nav-link[data-page="tasks.html"] .nav-icon-box {
-  transform: translateX(-1px) !important;
+  transform: translateX(-3px) !important;
 }
