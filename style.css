@@ -1987,3 +1987,22 @@ button:active {
     font-size: 12px !important;
   }
 }
+
+/* アイコンの箱だけを横にずらす */
+/* プラスなら右、マイナスなら左 */
+
+.nav-link[data-page="index.html"] .nav-icon-box {
+  transform: translateX(0px) !important;
+}
+
+.nav-link[data-page="practice.html"] .nav-icon-box {
+  transform: translateX(-1px) !important;
+}
+
+.nav-link[data-page="record.html"] .nav-icon-box {
+  transform: translateX(0px) !important;
+}
+
+.nav-link[data-page="tasks.html"] .nav-icon-box {
+  transform: translateX(-1px) !important;
+}
