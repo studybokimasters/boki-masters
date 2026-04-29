@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>練習</title>
+  <title>問題演習 | 簿記マスターズ</title>
 
-  <link rel="stylesheet" href="style.css?v=20260427">
+  <link rel="stylesheet" href="style.css?v=20260429">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,54 +24,76 @@
 
   <div class="container">
 
+    <div class="card main-progress-card">
+      <div class="main-progress-head">
+        <div>
+          <h3>演習メニュー</h3>
+          <p class="sub-text">
+            分野別・ランダム・復習・テストから学習方法を選べます。
+          </p>
+        </div>
+      </div>
+    </div>
+
     <div class="mode-grid" id="modeSelect">
+
       <button class="mode-btn" onclick="startMode('category')">
         <div class="mode-title">分野別</div>
-        <div class="mode-desc">苦手を集中攻略</div>
+        <div class="mode-desc">基礎・商品売買・決算など、苦手を集中攻略</div>
       </button>
 
       <button class="mode-btn" onclick="startMode('random', 'easy')">
         <div class="mode-title">ランダム</div>
-        <div class="mode-desc">全範囲ミックス</div>
+        <div class="mode-desc">全範囲からミックス出題して実力確認</div>
       </button>
 
       <button class="mode-btn" onclick="startMode('mistake')">
         <div class="mode-title">間違い復習</div>
-        <div class="mode-desc">ミスだけ復習</div>
+        <div class="mode-desc">過去に間違えた問題だけをもう一度解く</div>
       </button>
 
       <button class="mode-btn" onclick="startMode('test')">
         <div class="mode-title">テスト</div>
-        <div class="mode-desc">10問で実力確認</div>
+        <div class="mode-desc">10問で今の理解度をチェック</div>
       </button>
+
     </div>
 
     <div id="categorySelect" class="category-select" style="display:none;">
-      <div class="section-head">
-        <h3>分野を選択</h3>
-        <p>進捗を見ながら解きたい分野を選べます</p>
+      <div class="card main-progress-card">
+        <div class="main-progress-head">
+          <div>
+            <h3>分野を選択</h3>
+            <p class="sub-text">
+              進捗を見ながら、今解きたい分野を選んでください。
+            </p>
+          </div>
+        </div>
       </div>
 
       <div id="categoryCards" class="category-card-grid"></div>
 
       <div class="section-actions">
-        <button class="secondary-btn" onclick="backToMenu()">戻る</button>
+        <button class="secondary-btn" onclick="backToMenu()">メニューに戻る</button>
       </div>
     </div>
 
     <div id="quizArea" style="display:none;">
-      <div class="quiz-topbar">
-        <div>
-          <div class="quiz-mode-label" id="quizModeLabel">分野別</div>
-          <div class="quiz-category-label" id="quizCategoryLabel">基礎</div>
+
+      <div class="card">
+        <div class="quiz-topbar">
+          <div>
+            <div class="quiz-mode-label" id="quizModeLabel">分野別</div>
+            <div class="quiz-category-label" id="quizCategoryLabel">基礎</div>
+          </div>
+
+          <div class="quiz-count" id="quizCount">1 / 10</div>
         </div>
 
-        <div class="quiz-count" id="quizCount">1 / 10</div>
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-bar large">
-          <div id="quizProgressFill"></div>
+        <div class="progress-wrap">
+          <div class="progress-bar large">
+            <div id="quizProgressFill"></div>
+          </div>
         </div>
       </div>
 
@@ -80,25 +102,34 @@
       </div>
 
       <div id="choices" class="choices"></div>
+
       <div id="result" class="result-box"></div>
 
       <div class="actions">
         <button onclick="nextQuestion()">次へ</button>
         <button onclick="backToMenu()" class="secondary-btn">戻る</button>
       </div>
+
     </div>
 
     <div id="resultScreen" class="result-screen" style="display:none;">
+
       <div class="result-hero-card">
+
         <div class="result-badge">RESULT</div>
+
         <h2>演習完了</h2>
-        <p id="resultSummaryText">おつかれさまでした</p>
+
+        <p id="resultSummaryText">
+          おつかれさまでした
+        </p>
 
         <div class="result-score-circle">
           <span id="resultAccuracy">0%</span>
         </div>
 
         <div class="result-stats">
+
           <div class="result-stat">
             <div class="result-stat-label">正答数</div>
             <div class="result-stat-value" id="correctCountText">0 / 0</div>
@@ -108,6 +139,7 @@
             <div class="result-stat-label">分野</div>
             <div class="result-stat-value" id="resultCategoryText">基礎</div>
           </div>
+
         </div>
 
         <div class="result-progress-block">
@@ -129,72 +161,75 @@
         <div class="review-list-wrap">
           <div class="review-list-head">
             <h3>回答の振り返り</h3>
-            <p>自分の回答と正解、理由をまとめて確認できます</p>
+            <p>
+              自分の回答・正解・理由をまとめて確認できます。
+            </p>
           </div>
 
           <div id="reviewList" class="review-list"></div>
         </div>
+
       </div>
+
     </div>
 
   </div>
 
   <div class="nav">
-  <a href="index.html" class="nav-link" data-page="index.html" aria-label="ホーム">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-home" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4.4 10.4L12 4.1L19.6 10.4V19.6H15V14.2H9V19.6H4.4V10.4Z"></path>
-      </svg>
-    </span>
-    <span class="nav-label">ホーム</span>
-  </a>
+    <a href="index.html" class="nav-link" data-page="index.html" aria-label="ホーム">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-home" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.4 10.4L12 4.1L19.6 10.4V19.6H15V14.2H9V19.6H4.4V10.4Z"></path>
+        </svg>
+      </span>
+      <span class="nav-label">ホーム</span>
+    </a>
 
-  <a href="practice.html" class="nav-link" data-page="practice.html" aria-label="練習">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-practice" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 4.6H14.6L18 8V19.4H7V4.6Z"></path>
-        <path d="M14.6 4.6V8H18"></path>
-        <path d="M9.4 12.4H14.6"></path>
-        <path d="M9.4 15.9H13.2"></path>
-      </svg>
-    </span>
-    <span class="nav-label">練習</span>
-  </a>
+    <a href="practice.html" class="nav-link" data-page="practice.html" aria-label="練習">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-practice" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4.6H14.6L18 8V19.4H7V4.6Z"></path>
+          <path d="M14.6 4.6V8H18"></path>
+          <path d="M9.4 12.4H14.6"></path>
+          <path d="M9.4 15.9H13.2"></path>
+        </svg>
+      </span>
+      <span class="nav-label">練習</span>
+    </a>
 
-  <a href="record.html" class="nav-link" data-page="record.html" aria-label="記録">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-record" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="5.2" y="11.2" width="3.2" height="7.6" rx="1.2"></rect>
-        <rect x="10.4" y="5.2" width="3.2" height="13.6" rx="1.2"></rect>
-        <rect x="15.6" y="8.4" width="3.2" height="10.4" rx="1.2"></rect>
-      </svg>
-    </span>
-    <span class="nav-label">記録</span>
-  </a>
+    <a href="record.html" class="nav-link" data-page="record.html" aria-label="記録">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-record" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5.2" y="11.2" width="3.2" height="7.6" rx="1.2"></rect>
+          <rect x="10.4" y="5.2" width="3.2" height="13.6" rx="1.2"></rect>
+          <rect x="15.6" y="8.4" width="3.2" height="10.4" rx="1.2"></rect>
+        </svg>
+      </span>
+      <span class="nav-label">記録</span>
+    </a>
 
-  <a href="tasks.html" class="nav-link" data-page="tasks.html" aria-label="やること">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-tasks" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7.2 8.1L8.5 9.4L11.1 6.7"></path>
-        <path d="M13.2 8.3H18"></path>
-        <path d="M7.2 15L8.5 16.3L11.1 13.6"></path>
-        <path d="M13.2 15.2H18"></path>
-      </svg>
-    </span>
-    <span class="nav-label">やること</span>
-  </a>
-</div>
+    <a href="tasks.html" class="nav-link" data-page="tasks.html" aria-label="やること">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-tasks" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7.2 8.1L8.5 9.4L11.1 6.7"></path>
+          <path d="M13.2 8.3H18"></path>
+          <path d="M7.2 15L8.5 16.3L11.1 13.6"></path>
+          <path d="M13.2 15.2H18"></path>
+        </svg>
+      </span>
+      <span class="nav-label">やること</span>
+    </a>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const currentPage = location.pathname.split("/").pop() || "index.html";
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentPage = location.pathname.split("/").pop() || "index.html";
 
-    document.querySelectorAll(".nav-link").forEach((link) => {
-      link.classList.toggle("active", link.dataset.page === currentPage);
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.classList.toggle("active", link.dataset.page === currentPage);
+      });
     });
-  });
-</script>
-
+  </script>
 
   <script src="questions.js"></script>
   <script src="app.js"></script>

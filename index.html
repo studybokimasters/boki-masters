@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ホーム</title>
+  <title>ホーム | 簿記マスターズ</title>
 
- <link rel="stylesheet" href="style.css?v=20260427">
+  <link rel="stylesheet" href="style.css?v=20260429">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,13 @@
 
     <div class="card main-progress-card">
       <div class="main-progress-head">
-        <h3>今日の進捗</h3>
+        <div>
+          <h3>今日の進捗</h3>
+          <p id="todayStatusText" class="sub-text">
+            今日の学習を積み上げていきましょう。
+          </p>
+        </div>
+
         <div id="todayGoalText" class="main-progress-value">0 / 120分</div>
       </div>
 
@@ -46,28 +52,50 @@
 
       <div class="card">
         <h3>今週の進捗</h3>
-        <p id="weeklyProgressText" class="card-value">0時間0分 / 10時間（0%）</p>
 
-        <div class="progress-bar">
+        <p id="weeklyProgressText" class="card-value">
+          0時間0分 / 10時間（0%）
+        </p>
+
+        <div class="progress-bar" style="margin-top: 16px;">
           <div id="progressFill"></div>
         </div>
+
+        <p id="weeklyPaceText" class="sub-text">
+          今週のペースを確認できます。
+        </p>
       </div>
 
       <div class="card streak-card">
         <h3>連続日数</h3>
+
         <p id="streak" class="streak-value">0日連続</p>
+
+        <p class="sub-text" style="color: rgba(255,255,255,0.78);">
+          継続は力になります。
+        </p>
       </div>
 
       <div class="card">
         <h3>累計時間</h3>
-        <p id="totalTime" class="card-value">0時間0分</p>
+
+        <p id="totalTime" class="card-value">
+          0時間0分
+        </p>
+
+        <p class="sub-text">
+          ここまで積み上げた総学習時間です。
+        </p>
       </div>
 
       <div class="card">
         <h3>試験まで</h3>
-        <p id="countdown" class="card-value">未設定</p>
 
-        <div class="inline-form" style="margin-top: 14px;">
+        <p id="countdown" class="card-value">
+          未設定
+        </p>
+
+        <div class="inline-form" style="margin-top: 16px;">
           <input type="date" id="examDate">
           <button onclick="saveExamDate()">保存</button>
         </div>
@@ -77,65 +105,141 @@
   </div>
 
   <div class="nav">
-  <a href="index.html" class="nav-link" data-page="index.html" aria-label="ホーム">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-home" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M4.4 10.4L12 4.1L19.6 10.4V19.6H15V14.2H9V19.6H4.4V10.4Z"></path>
-      </svg>
-    </span>
-    <span class="nav-label">ホーム</span>
-  </a>
+    <a href="index.html" class="nav-link" data-page="index.html" aria-label="ホーム">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-home" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.4 10.4L12 4.1L19.6 10.4V19.6H15V14.2H9V19.6H4.4V10.4Z"></path>
+        </svg>
+      </span>
+      <span class="nav-label">ホーム</span>
+    </a>
 
-  <a href="practice.html" class="nav-link" data-page="practice.html" aria-label="練習">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-practice" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 4.6H14.6L18 8V19.4H7V4.6Z"></path>
-        <path d="M14.6 4.6V8H18"></path>
-        <path d="M9.4 12.4H14.6"></path>
-        <path d="M9.4 15.9H13.2"></path>
-      </svg>
-    </span>
-    <span class="nav-label">練習</span>
-  </a>
+    <a href="practice.html" class="nav-link" data-page="practice.html" aria-label="練習">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-practice" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4.6H14.6L18 8V19.4H7V4.6Z"></path>
+          <path d="M14.6 4.6V8H18"></path>
+          <path d="M9.4 12.4H14.6"></path>
+          <path d="M9.4 15.9H13.2"></path>
+        </svg>
+      </span>
+      <span class="nav-label">練習</span>
+    </a>
 
-  <a href="record.html" class="nav-link" data-page="record.html" aria-label="記録">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-record" viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="5.2" y="11.2" width="3.2" height="7.6" rx="1.2"></rect>
-        <rect x="10.4" y="5.2" width="3.2" height="13.6" rx="1.2"></rect>
-        <rect x="15.6" y="8.4" width="3.2" height="10.4" rx="1.2"></rect>
-      </svg>
-    </span>
-    <span class="nav-label">記録</span>
-  </a>
+    <a href="record.html" class="nav-link" data-page="record.html" aria-label="記録">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-record" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5.2" y="11.2" width="3.2" height="7.6" rx="1.2"></rect>
+          <rect x="10.4" y="5.2" width="3.2" height="13.6" rx="1.2"></rect>
+          <rect x="15.6" y="8.4" width="3.2" height="10.4" rx="1.2"></rect>
+        </svg>
+      </span>
+      <span class="nav-label">記録</span>
+    </a>
 
-  <a href="tasks.html" class="nav-link" data-page="tasks.html" aria-label="やること">
-    <span class="nav-icon-box">
-      <svg class="nav-icon nav-icon-tasks" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7.2 8.1L8.5 9.4L11.1 6.7"></path>
-        <path d="M13.2 8.3H18"></path>
-        <path d="M7.2 15L8.5 16.3L11.1 13.6"></path>
-        <path d="M13.2 15.2H18"></path>
-      </svg>
-    </span>
-    <span class="nav-label">やること</span>
-  </a>
-</div>
+    <a href="tasks.html" class="nav-link" data-page="tasks.html" aria-label="やること">
+      <span class="nav-icon-box">
+        <svg class="nav-icon nav-icon-tasks" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7.2 8.1L8.5 9.4L11.1 6.7"></path>
+          <path d="M13.2 8.3H18"></path>
+          <path d="M7.2 15L8.5 16.3L11.1 13.6"></path>
+          <path d="M13.2 15.2H18"></path>
+        </svg>
+      </span>
+      <span class="nav-label">やること</span>
+    </a>
+  </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const currentPage = location.pathname.split("/").pop() || "index.html";
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const currentPage = location.pathname.split("/").pop() || "index.html";
 
-    document.querySelectorAll(".nav-link").forEach((link) => {
-      link.classList.toggle("active", link.dataset.page === currentPage);
+      document.querySelectorAll(".nav-link").forEach((link) => {
+        link.classList.toggle("active", link.dataset.page === currentPage);
+      });
     });
-  });
-</script>
-
-  
+  </script>
 
   <script src="questions.js"></script>
   <script src="app.js"></script>
+
+  <script>
+    function setProgressState(element, percent) {
+      if (!element) return;
+
+      element.classList.remove("danger", "warning", "good", "success");
+
+      if (percent < 40) {
+        element.classList.add("danger");
+      } else if (percent < 80) {
+        element.classList.add("warning");
+      } else if (percent < 100) {
+        element.classList.add("good");
+      } else {
+        element.classList.add("success");
+      }
+    }
+
+    function enhanceHomeStatus() {
+      if (typeof getData !== "function") return;
+
+      const today = getData("todayStudyTime");
+      const weekly = getData("weeklyStudyTime");
+
+      const weeklyGoalHours =
+        typeof getWeeklyGoal === "function"
+          ? getWeeklyGoal()
+          : Number(localStorage.getItem(getLevelKey("weeklyGoal"))) || 10;
+
+      const todayGoal = 120;
+      const todayPercent = Math.min((today / todayGoal) * 100, 100);
+
+      const weeklyGoalMinutes = weeklyGoalHours * 60;
+      const weeklyPercent =
+        weeklyGoalMinutes > 0
+          ? Math.min((weekly / weeklyGoalMinutes) * 100, 100)
+          : 0;
+
+      const todayFill = document.getElementById("todayGoalFill");
+      const weeklyFill = document.getElementById("progressFill");
+
+      setProgressState(todayFill, todayPercent);
+      setProgressState(weeklyFill, weeklyPercent);
+
+      const todayStatusText = document.getElementById("todayStatusText");
+      const weeklyPaceText = document.getElementById("weeklyPaceText");
+
+      if (todayStatusText) {
+        if (todayPercent < 40) {
+          todayStatusText.textContent = "まだ序盤です。まずは少しだけ進めましょう。";
+        } else if (todayPercent < 80) {
+          todayStatusText.textContent = "良い流れです。あと少し積み上げましょう。";
+        } else if (todayPercent < 100) {
+          todayStatusText.textContent = "かなり順調です。目標達成まであと少しです。";
+        } else {
+          todayStatusText.textContent = "今日の目標を達成しています。";
+        }
+      }
+
+      if (weeklyPaceText) {
+        if (weeklyPercent < 40) {
+          weeklyPaceText.textContent = "今週は少し遅れ気味です。短時間でも再開しましょう。";
+        } else if (weeklyPercent < 80) {
+          weeklyPaceText.textContent = "今週の目標に向けて進んでいます。";
+        } else if (weeklyPercent < 100) {
+          weeklyPaceText.textContent = "目標達成が見えてきています。";
+        } else {
+          weeklyPaceText.textContent = "今週の目標を達成しています。";
+        }
+      }
+    }
+
+    window.addEventListener("load", () => {
+      setTimeout(enhanceHomeStatus, 50);
+    });
+
+    setInterval(enhanceHomeStatus, 1500);
+  </script>
 
 </body>
 </html>
